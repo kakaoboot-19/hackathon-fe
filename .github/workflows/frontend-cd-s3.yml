@@ -17,13 +17,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: yarn
+          cache: npm
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: Build
-        run: yarn build
+        run: nom run build
         # env:
           # 환경변수 필요하면 추가
           # VITE_API_BASE_URL: "https://card.mika-yim.cloud"
