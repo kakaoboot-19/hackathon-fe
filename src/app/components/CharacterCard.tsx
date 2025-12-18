@@ -1,3 +1,6 @@
+import { useRef } from 'react';
+import { Download } from 'lucide-react';
+import { domToPng } from 'modern-screenshot';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 
 export interface CharacterCardData {
@@ -27,35 +30,126 @@ interface CharacterCardProps {
 }
 
 export function CharacterCard({ card, isFlipped, onClick }: CharacterCardProps) {
+  const frontRef = useRef<HTMLDivElement>(null);
+  const backRef = useRef<HTMLDivElement>(null);
 
-    // Calculate percentages for each stat pair
-    const calculateStats = (value: number) => {
-        const right = value; // 0-100
-        const left = 100 - value;
-        return { left, right };
+  const handleSave = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    const saveImage = async (element: HTMLElement, suffix: string) => {
+      const iframe = document.createElement('iframe');
+      Object.assign(iframe.style, {
+        position: 'fixed',
+        left: '-9999px',
+        top: '0',
+        width: '1440px',
+        height: '900px',
+        border: 'none',
+        zIndex: '-9999',
+        visibility: 'hidden',
+      });
+      document.body.appendChild(iframe);
+
+      try {
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+        if (!iframeDoc) throw new Error('Iframe document not found');
+
+        const styles = Array.from(document.querySelectorAll('style, link[rel="stylesheet"]'));
+        styles.forEach(style => {
+          iframeDoc.head.appendChild(style.cloneNode(true));
+        });
+
+        const clonedElement = element.cloneNode(true) as HTMLElement;
+        const width = 400;
+        const height = 600;
+        const buffer = 100;
+
+        Object.assign(clonedElement.style, {
+          width: `${width}px`,
+          height: `${height}px`,
+          margin: `${buffer / 2}px`,
+          transform: 'none',
+          position: 'absolute',
+          top: '0',
+          left: '0',
+          maxWidth: 'none',
+          maxHeight: 'none',
+          overflow: 'hidden',
+          borderRadius: 'inherit',
+          boxSizing: 'border-box'
+        });
+
+        const wrapper = iframeDoc.createElement('div');
+        Object.assign(wrapper.style, {
+          position: 'relative',
+          width: `${width + buffer}px`,
+          height: `${height + buffer}px`,
+          overflow: 'hidden'
+        });
+        wrapper.appendChild(clonedElement);
+        iframeDoc.body.appendChild(wrapper);
+
+        await new Promise(resolve => setTimeout(resolve, 800));
+
+        const dataUrl = await domToPng(wrapper, {
+          scale: 3,
+          width: width + buffer,
+          height: height + buffer,
+          style: {
+            transform: 'none',
+            transformOrigin: 'top left',
+          },
+        });
+
+        const link = document.createElement('a');
+        link.download = `${card.name}-${suffix}.png`;
+        link.href = dataUrl;
+        link.click();
+      } catch (error) {
+        console.error(`Failed to save ${suffix} image:`, error);
+      } finally {
+        if (document.body.contains(iframe)) {
+          document.body.removeChild(iframe);
+        }
+      }
     };
 
-    const dayNightStats = calculateStats(card.stats.dayVsNight);
-    const steadyBurstStats = calculateStats(card.stats.steadyVsBurst);
-    const indieCrewStats = calculateStats(card.stats.indieVsCrew);
-    const specialGeneralStats = calculateStats(card.stats.specialVsGeneral);
+    if (frontRef.current) {
+      await saveImage(frontRef.current, 'front');
+    }
 
-    // Determine personality type based on stats 
-    const personalityType = [
-        card.stats.dayVsNight < 50 ? 'N' : 'D', // Night vs Day
-        card.stats.steadyVsBurst > 50 ? 'B' : 'S', // Burst vs Steady
-        card.stats.indieVsCrew > 50 ? 'C' : 'I', // Crew vs Indie
-        card.stats.specialVsGeneral > 50 ? 'G' : 'P', // General vs Professional
-    ].join('');
+    if (backRef.current) {
+      setTimeout(() => saveImage(backRef.current!, 'back'), 500);
+    }
+  };
+
+  const calculateStats = (value: number) => {
+    const right = value; // 0-100
+    const left = 100 - value;
+    return { left, right };
+  };
+
+  const dayNightStats = calculateStats(card.stats.dayVsNight);
+  const steadyBurstStats = calculateStats(card.stats.steadyVsBurst);
+  const indieCrewStats = calculateStats(card.stats.indieVsCrew);
+  const specialGeneralStats = calculateStats(card.stats.specialVsGeneral);
+
+  // Determine personality type based on stats 
+  const personalityType = [
+    card.stats.dayVsNight < 50 ? 'N' : 'D', // Night vs Day
+    card.stats.steadyVsBurst > 50 ? 'A' : 'B', // Atom vs Bulk
+    card.stats.indieVsCrew > 50 ? 'C' : 'I', // Crew vs Indie
+    card.stats.specialVsGeneral > 50 ? 'S' : 'G', // special vs General
+  ].join('');
 
   return (
     <div className="character-card">
-      <div 
+      <div
         className={`character-card-flip-container ${isFlipped ? 'flipped' : ''}`}
         onClick={onClick}
       >
         {/* Front Side - Character Card */}
-        <div className="character-card-inner character-card-front">
+        <div className="character-card-inner character-card-front" ref={frontRef}>
           {/* Glow Effect */}
           <div className="card-glow"></div>
 
@@ -104,7 +198,7 @@ export function CharacterCard({ card, isFlipped, onClick }: CharacterCardProps) 
         </div>
 
         {/* Back Side - Stats Analysis */}
-        <div className="character-card-inner character-card-back">
+        <div className="character-card-inner character-card-back" ref={backRef}>
           {/* Card Content Wrapper */}
           <div className="card-content-wrapper">
             {/* Top 30% - Personality Type */}
@@ -213,11 +307,27 @@ export function CharacterCard({ card, isFlipped, onClick }: CharacterCardProps) 
               </div>
             </div>
           </div>
-                    {/* Flip Hint */}
+          {/* Flip Hint */}
           <div className="flip-hint-back">▼ FLIP ▼</div>
         </div>
       </div>
 
-    </div>
+      <div className="character-card-actions">
+        {/* Player Name */}
+        <div className="card-player-name">
+          {card.name}
+        </div>
+
+        {/* Download Button */}
+        <button
+          className="card-download-button"
+          onClick={handleSave}
+          title="Save Card Images"
+        >
+          <Download size={16} />
+          <span>SAVE</span>
+        </button>
+      </div>
+    </div >
   );
 }
