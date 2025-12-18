@@ -124,8 +124,8 @@ export function CharacterCard({ card, isFlipped, onClick }: CharacterCardProps) 
   };
 
   const calculateStats = (value: number) => {
-    const right = value; // 0-100
-    const left = 100 - value;
+    const left = value; // 0-100
+    const right = 100 - value;
     return { left, right };
   };
 
@@ -181,6 +181,7 @@ export function CharacterCard({ card, isFlipped, onClick }: CharacterCardProps) 
                 <ImageWithFallback
                   src={card.image.url}
                   alt={card.role.type}
+                  crossOrigin="anonymous"
                 />
               </div>
             </div>
