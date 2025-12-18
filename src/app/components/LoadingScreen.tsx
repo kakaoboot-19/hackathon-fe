@@ -1,14 +1,13 @@
 import { useState, useEffect, useMemo } from 'react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import './LoadingScreen.css';
-import ProgressBar from '@ramonak/react-progress-bar';
 
 const loadingSteps = [
-  'ANALYZING GITHUB PROFILE',
-  'CALCULATING STATS',
-  'GENERATING CHARACTER',
-  'CREATING CARD',
-  'FINALIZING DATA'
+  '가장 예쁜 옷을 고르고 있어요 👗',
+  '능력치를 꼬물꼬물 계산 중 📊',
+  '반짝이는 생명력을 불어넣는 중 ✨',
+  '예쁜 카드에 소중히 담고 있어요 🃏',
+  '곧 주인공이 등장해요 🎁'
 ];
 
 interface LoadingScreenProps {
@@ -40,21 +39,47 @@ export function LoadingScreen({ estimatedDurationMs = 15000, apiProgress = 0 }: 
   }, []);
 
   // Time-based progress: climb toward 85% over estimatedDurationMs, then wait for API
-  useEffect(() => {
-    const start = performance.now();
-    let raf: number;
+    useEffect(() => {
+    const TOTAL_DURATION = 45_000; // 45초
+    const TARGET = 85;
+    const TICK = 100; // 0.1초 단위
 
-    const tick = () => {
-      const elapsed = performance.now() - start;
-      const ratio = Math.min(elapsed / estimatedDurationMs, 1);
-      const next = Math.min(85, ratio * 85);
-      setTimeProgress((prev) => (next > prev ? next : prev));
-      raf = requestAnimationFrame(tick);
-    };
+    const startTime = Date.now();
 
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [estimatedDurationMs]);
+    const interval = setInterval(() => {
+        const elapsed = Date.now() - startTime;
+        const ratio = Math.min(elapsed / TOTAL_DURATION, 1);
+        const next = ratio * TARGET;
+
+        setTimeProgress((prev) => (next > prev ? next : prev));
+
+        if (ratio >= 1) {
+        clearInterval(interval);
+        }
+    }, TICK);
+
+    return () => clearInterval(interval);
+    }, []);
+
+    useEffect(() => {
+        if (timeProgress < 85) return;
+
+        let direction = 1;
+
+        const jitter = setInterval(() => {
+            setTimeProgress((prev) => {
+            let next = prev + direction * 0.2;
+
+            if (next >= 87) direction = -1;
+            if (next <= 85) direction = 1;
+
+            return next;
+            });
+        }, 300);
+
+        return () => clearInterval(jitter);
+        }, [timeProgress]);
+
 
   // Combine API progress with time progress
   const displayProgress = useMemo(() => {
@@ -63,6 +88,7 @@ export function LoadingScreen({ estimatedDurationMs = 15000, apiProgress = 0 }: 
     return Math.min(combined, 100);
   }, [apiProgress, timeProgress]);
 
+  
   return (
     <div className="loading-container">
       {/* Animated Pixel Grid Pattern */}
@@ -148,7 +174,7 @@ export function LoadingScreen({ estimatedDurationMs = 15000, apiProgress = 0 }: 
 
             {/* Additional Status Text */}
             <div className="status-text">
-              Please wait...
+              Wait a minute!!!
             </div>
           </div>
         </div>

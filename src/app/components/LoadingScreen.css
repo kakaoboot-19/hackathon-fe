@@ -238,6 +238,7 @@
 }
 
 .loading-text-content {
+    font-family: var(--font-neo);
   margin-bottom: 0.5rem;
 }
 
@@ -291,9 +292,10 @@
 
 /* Status Text */
 .status-text {
+    font-family: var(--font-neo);
   margin-top: 2rem;
   text-align: center;
-  font-size: 0.75rem;
+  font-size: 1.0rem;
   opacity: 0.6;
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   color: rgba(62, 178, 255, 1);

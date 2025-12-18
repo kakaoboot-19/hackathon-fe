@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const baseURL = import.meta.env.VITE_API_BASE_URL;
-// const baseURL = "https://card.mika-yim.cloud/";
+// const baseURL = import.meta.env.VITE_API_BASE_URL;
+const baseURL = "https://card.mika-yim.cloud/";
 if (!baseURL) {
   // Surface misconfiguration early so network calls don't silently hit the wrong origin
   console.warn("VITE_API_BASE_URL is not defined. API requests will use the current origin.");
