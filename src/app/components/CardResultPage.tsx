@@ -74,9 +74,12 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
         setError(null);
 
         const backendResults = await fetchCardResult(normalizedUsernames);
-
-        const results = backendResults.users.map((result, index) => {
-          const username = result.username ?? normalizedUsernames[index] ?? `user-${index + 1}`;
+        const cardResults = backendResults.users;
+        console.log(cardResults);
+        
+        const results = cardResults.map((result, index) => {
+            console.log(result);
+          const username = result.username ?? `user-${index + 1}`;
           validateBackendData(result, username);
           return mapToCharacterCard(username, index, result);
         });
