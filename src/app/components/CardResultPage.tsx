@@ -33,7 +33,8 @@ function validateBackendData(
     throw new Error(`(${username}) 사용자명이 누락되었습니다.`);
   }
 
-  if (!typed.role || !typed.role.role || !typed.role.roleKr || !typed.role.description) {
+  // || !typed.role.roleKr
+  if (!typed.role || !typed.role.role || !typed.role.description) {
     throw new Error(`(${username}) 역할 정보가 누락되었습니다.`);
   }
 
