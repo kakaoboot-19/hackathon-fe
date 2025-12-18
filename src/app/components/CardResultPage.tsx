@@ -322,7 +322,7 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
         {/* Title */}
         <div className="card-result-title">
           <h1>CHARACTER DECK</h1>
-          <p className="card-result-subtitle">Your GitHub Heroes</p>
+          <p className="card-result-subtitle">Our GitHub Heroes</p>
         </div>
 
         {/* Card Slider */}

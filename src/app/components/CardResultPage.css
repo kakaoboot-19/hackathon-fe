@@ -205,6 +205,7 @@
 /* Card Flip Container - RESPONSIVE HEIGHT */
 .character-card-flip-container {
   position: relative;
+  perspective: 1000px;
   width: 100%;
   height: min(75vh, 520px);
   cursor: pointer;
@@ -243,13 +244,15 @@
 }
 
 .character-card-flip-container.flipped .character-card-front {
+    backface-visibility: hidden;
   transform: rotateY(180deg);
-  animation: flipOut 0.8s ease-in-out;
+  transition: transform 0.8s;
 }
 
 .character-card-flip-container.flipped .character-card-back {
+    backface-visibility: hidden;
   transform: rotateY(0deg);
-  animation: flipIn 0.8s ease-in-out;
+  transition: transform 0.8s;
 }
 
 /* Flip Animations */
@@ -346,7 +349,7 @@
     transform: scale(0.9) translateY(0px);
   }
   50% {
-    transform: scale(0.9) translateY(-5px);
+    transform: scale(0.9) translateY(-15px);
   }
 }
 
