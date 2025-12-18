@@ -29,7 +29,7 @@ function validateBackendData(
 
   const typed = data as Partial<Awaited<ReturnType<typeof fetchCardResult>>>;
 
-  if (!typed.role || !typed.role.name || !typed.role.type || !typed.role.description) {
+  if (!typed.role || !typed.role.role || !typed.role.type || !typed.role.description) {
     throw new Error(`(${username}) 역할 정보가 누락되었습니다.`);
   }
 

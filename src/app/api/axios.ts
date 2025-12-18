@@ -11,7 +11,7 @@ console.log(baseURL);
 
 export const api = axios.create({
   baseURL: baseURL || window.location.origin,
-  timeout: 100000000000,
+  timeout: 60000,
   headers: {
     "Content-Type": "application/json",
   },

@@ -11,7 +11,7 @@ export function mapToCharacterCard(
     id: username,
     name: username,
     role: {
-        name: data.role.name,
+        role: data.role.role,
         type: data.role.type,
         description: data.role.description 
     },

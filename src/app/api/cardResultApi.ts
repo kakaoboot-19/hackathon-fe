@@ -1,7 +1,7 @@
 // app/api/cardResultApi.ts
 export interface BackendCardResult {
   role: {
-    name: string;
+    role: string;
     type: string;
     description: string;
   };
