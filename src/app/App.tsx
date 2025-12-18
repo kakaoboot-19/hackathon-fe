@@ -113,12 +113,13 @@ export default function App() {
       return; // Don't proceed if no valid usernames
     }
     
-    setAppState('loading');
+    // setAppState('loading');
+    setAppState('result');
     
     // Simulate loading time
-    setTimeout(() => {
-      setAppState('result');
-    }, 3000);
+    // setTimeout(() => {
+    //   setAppState('result');
+    // }, 3000);
   };
 
   const handleReset = () => {
