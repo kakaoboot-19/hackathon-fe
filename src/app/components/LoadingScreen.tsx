@@ -100,7 +100,6 @@ export function LoadingScreen() {
               {/* Center Core (Fixed, no animation) */}
               <div className="spinner-core-wrapper">
                 <div className="spinner-core">
-                  <div className="spinner-core-inner"></div>
                 </div>
               </div>
             </div>

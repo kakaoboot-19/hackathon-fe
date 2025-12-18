@@ -176,24 +176,24 @@ export default function App() {
           {/* Title Section */}
           <div className="text-center mb-8 md:mb-12">
             <h1 
-              className="text-3xl md:text-4xl mb-4 animate-pulse"
+              className="text-3xl md:text-4xl mb-4"
               style={{ 
                 color: 'rgba(242, 229, 48, 1)',
                 textShadow: '4px 4px 0px rgba(140, 3, 117, 1), 8px 8px 0px rgba(25, 24, 38, 0.5)',
                 lineHeight: '1.5'
               }}
             >
-              QUEST START
+              Dev Card
             </h1>
             <p 
-              className="text-xs md:text-sm"
+              className="text-xs md:text-sm animate-pulse"
               style={{ 
                 color: 'rgba(62, 178, 255, 1)',
                 textShadow: '2px 2px 0px rgba(25, 24, 38, 1)',
                 lineHeight: '1.8'
               }}
             >
-              Enter GitHub Heroes
+              Enter Your Github Username
             </p>
           </div>
 
@@ -224,12 +224,13 @@ export default function App() {
               <h2 
                 className="text-sm md:text-base mb-6"
                 style={{ 
+                    fontFamily: 'var(--font-neo)',
                   color: 'rgba(242, 229, 48, 1)',
                   textShadow: '2px 2px 0px rgba(140, 3, 117, 1)',
                   lineHeight: '1.8'
                 }}
               >
-                SELECT PLAYERS
+                Github Username을 작성해주세요.
               </h2>
 
               {/* Input Fields */}
@@ -327,7 +328,7 @@ export default function App() {
                   }}
                 >
                   <Plus size={16} />
-                  <span>ADD PLAYER</span>
+                  <span>ADD USER</span>
                 </button>
               )}
 
