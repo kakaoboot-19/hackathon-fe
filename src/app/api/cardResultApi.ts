@@ -22,8 +22,8 @@ export interface BackendCardResult {
 export interface BackendBatchResponse {
   users: BackendCardResult[];
   team_report: {
-    synergy: string;
-    warning: string;
+    synergy: string | string[];
+    warning: string | string[];
   };
 }
 

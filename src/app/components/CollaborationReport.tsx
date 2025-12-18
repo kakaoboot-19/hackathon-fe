@@ -1,9 +1,11 @@
 import { Sparkles, AlertTriangle } from 'lucide-react';
 import './CollaborationReport.css';
 
+type TeamReport = { synergy: string | string[]; warning: string | string[] };
+
 interface CollaborationReportProps {
   usernames: string[];
-  teamReport?: { synergy: string; warning: string } | null;
+  teamReport?: TeamReport | null;
   onClose?: () => void;
 }
 
@@ -21,8 +23,16 @@ export function CollaborationReport({ usernames, teamReport }: CollaborationRepo
     '독립 작업 성향이 강한 멤버가 있다면, 정기적인 동기화 시간(주 2~3회)을 정해두어 프로젝트 방향이 어긋나지 않도록 주의하세요.',
   ];
 
-  const synergyItems = teamReport?.synergy ? [teamReport.synergy] : synergyTips;
-  const cautionItems = teamReport?.warning ? [teamReport.warning] : cautionPoints;
+  const synergyItems = teamReport?.synergy
+    ? Array.isArray(teamReport.synergy)
+      ? teamReport.synergy
+      : [teamReport.synergy]
+    : synergyTips;
+  const cautionItems = teamReport?.warning
+    ? Array.isArray(teamReport.warning)
+      ? teamReport.warning
+      : [teamReport.warning]
+    : cautionPoints;
 
   return (
     <div className="collaboration-report-container-inline">

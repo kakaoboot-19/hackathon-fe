@@ -54,10 +54,12 @@ function validateBackendData(
 }
 
 
+type TeamReport = { synergy: string | string[]; warning: string | string[] };
+
 export function CardResultPage({ usernames, mockCards, onReset, onCollaboration }: CardResultPageProps) {
   const sliderRef = useRef<Slider>(null);
   const [cards, setCards] = useState<CharacterCardData[]>([]);
-  const [teamReport, setTeamReport] = useState<{ synergy: string; warning: string } | null>(null);
+  const [teamReport, setTeamReport] = useState<TeamReport | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [flippedCards, setFlippedCards] = useState<Set<string>>(new Set());
@@ -112,13 +114,13 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
 
         if (cached && mounted) {
           try {
-            const parsed = JSON.parse(cached) as unknown;
-            if (Array.isArray(parsed)) {
-              setCards(parsed as CharacterCardData[]);
-              setTeamReport(null);
-              setIsSingleUser((parsed as CharacterCardData[]).length <= 1);
-            } else if (parsed && typeof parsed === 'object' && 'cards' in parsed) {
-              const cachedObj = parsed as { cards: CharacterCardData[]; teamReport?: { synergy: string; warning: string } | null };
+          const parsed = JSON.parse(cached) as unknown;
+          if (Array.isArray(parsed)) {
+            setCards(parsed as CharacterCardData[]);
+            setTeamReport(null);
+            setIsSingleUser((parsed as CharacterCardData[]).length <= 1);
+          } else if (parsed && typeof parsed === 'object' && 'cards' in parsed) {
+              const cachedObj = parsed as { cards: CharacterCardData[]; teamReport?: TeamReport | null };
               setCards(cachedObj.cards ?? []);
               setTeamReport(cachedObj.teamReport ?? null);
               setIsSingleUser((cachedObj.cards?.length ?? 0) <= 1 || !cachedObj.teamReport);
