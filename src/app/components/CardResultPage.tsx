@@ -55,7 +55,6 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [flippedCards, setFlippedCards] = useState<Set<string>>(new Set());
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -198,21 +197,6 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
     sliderRef.current?.slickNext();
   };
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleModalBackgroundClick = (e: React.MouseEvent) => {
-    // Close modal when clicking the background (not the modal content)
-    if (e.target === e.currentTarget) {
-      handleCloseModal();
-    }
-  };
-
   if (loading) {
     return <LoadingScreen />;
   }
@@ -245,76 +229,163 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
 
   return (
     <div className="card-result-container">
+        {/* Pixel Stars Background */}
+        <div className="pixel-stars-background">
+            <div className="pixel-star pixel-star-1"></div>
+            <div className="pixel-star pixel-star-2"></div>
+            <div className="pixel-star pixel-star-3"></div>
+            <div className="pixel-star pixel-star-4"></div>
+            <div className="pixel-star pixel-star-5"></div>
+            <div className="pixel-star pixel-star-6"></div>
+            <div className="pixel-star pixel-star-7"></div>
+            <div className="pixel-star pixel-star-8"></div>
+            <div className="pixel-star pixel-star-9"></div>
+            <div className="pixel-star pixel-star-10"></div>
+        </div>
+
       {/* Pixel Grid Pattern */}
       <div className="card-result-grid-pattern"></div>
 
       {/* Main Content */}
       <div className="card-result-content">
-        {/* Collaboration Strategy Button - Top */}
-        <div className="collaboration-button-container">
-          <button className="collaboration-strategy-button" onClick={handleOpenModal}>
-            ▶ 협업 전략 수립하기 ◀
-          </button>
-        </div>
+        {/* ========== CARD RESULT SECTION ========== */}
+        <section className="card-result-section">
+          {/* Title */}
+          <div className="card-result-title">
+            <h1>CHARACTER DECK</h1>
+            <p className="card-result-subtitle">Your GitHub Heroes</p>
+          </div>
 
-        {/* Title */}
-        <div className="card-result-title">
-          <h1>CHARACTER DECK</h1>
-          <p className="card-result-subtitle">Your GitHub Heroes</p>
-        </div>
+          {/* Card Slider */}
+          <div className="card-slider-container">
+            {cards.length > 1 && (
+              <>
+                <button
+                  className="slider-nav-button slider-nav-button-prev"
+                  onClick={goToPrev}
+                  aria-label="Previous card"
+                >
+                  <ChevronLeft size={24} />
+                </button>
+                <button
+                  className="slider-nav-button slider-nav-button-next"
+                  onClick={goToNext}
+                  aria-label="Next card"
+                >
+                  <ChevronRight size={24} />
+                </button>
+              </>
+            )}
 
-        {/* Card Slider */}
-        <div className="card-slider-container">
-          {cards.length > 1 && (
-            <>
-              <button
-                className="slider-nav-button slider-nav-button-prev"
-                onClick={goToPrev}
-                aria-label="Previous card"
-              >
-                <ChevronLeft size={24} />
-              </button>
-              <button
-                className="slider-nav-button slider-nav-button-next"
-                onClick={goToNext}
-                aria-label="Next card"
-              >
-                <ChevronRight size={24} />
-              </button>
-            </>
-          )}
+            <Slider ref={sliderRef} {...sliderSettings}>
+              {cards.map((card) => (
+                <CharacterCard
+                  key={card.id}
+                  card={card}
+                  isFlipped={flippedCards.has(card.id)}
+                  onClick={(e) => handleCardClick(card.id, e)}
+                />
+              ))}
+            </Slider>
+          </div>
+        </section>
 
-          <Slider ref={sliderRef} {...sliderSettings}>
-            {cards.map((card) => (
-              <CharacterCard
-                key={card.id}
-                card={card}
-                isFlipped={flippedCards.has(card.id)}
-                onClick={(e) => handleCardClick(card.id, e)}
-              />
-            ))}
-          </Slider>
-        </div>
+        {/* ========== TRANSFER COMPONENT ========== */}
+        <section className="transfer-section">
+          <div className="transfer-divider">
+            <span className="transfer-pixel-line"></span>
+            <span className="transfer-text">당신의 팀을 위한 AI 전략</span>
+            <span className="transfer-pixel-line"></span>
+          </div>
+        </section>
 
-        {/* Actions */}
+        {/* ========== COLLABORATION REPORT SECTION ========== */}
+        {/* <section className="collaboration-report-section">
+          <CollaborationReport usernames={usernames} />
+        </section> */}
+
+        {/* ========== ACTIONS ========== */}
         <div className="card-result-actions">
           <button className="action-button" onClick={onReset}>
             ◀ CREATE NEW DECK ▶
           </button>
         </div>
       </div>
-
-      {/* Collaboration Modal */}
-      {isModalOpen && (
-        <div className="collaboration-modal-overlay" onClick={handleModalBackgroundClick}>
-          <div className="collaboration-modal-content">
-            <CollaborationReport 
-              usernames={cards.map((card) => card.name)}
-              onClose={handleCloseModal}
-            />
-          </div>
-        </div>
-      )}
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//         {/* Title */}
+//         <div className="card-result-title">
+//           <h1>CHARACTER DECK</h1>
+//           <p className="card-result-subtitle">Your GitHub Heroes</p>
+//         </div>
+
+//         {/* Card Slider */}
+//         <div className="card-slider-container">
+//           {cards.length > 1 && (
+//             <>
+//               <button
+//                 className="slider-nav-button slider-nav-button-prev"
+//                 onClick={goToPrev}
+//                 aria-label="Previous card"
+//               >
+//                 <ChevronLeft size={24} />
+//               </button>
+//               <button
+//                 className="slider-nav-button slider-nav-button-next"
+//                 onClick={goToNext}
+//                 aria-label="Next card"
+//               >
+//                 <ChevronRight size={24} />
+//               </button>
+//             </>
+//           )}
+
+//           <Slider ref={sliderRef} {...sliderSettings}>
+//             {cards.map((card) => (
+//               <CharacterCard
+//                 key={card.id}
+//                 card={card}
+//                 isFlipped={flippedCards.has(card.id)}
+//                 onClick={(e) => handleCardClick(card.id, e)}
+//               />
+//             ))}
+//           </Slider>
+//         </div>
+
+//         {/* Actions */}
+//         <div className="card-result-actions">
+//           <button className="action-button" onClick={onReset}>
+//             ◀ CREATE NEW DECK ▶
+//           </button>
+//         </div>
+//       </div>
+
+//       {/* Collaboration Modal */}
+//       {isModalOpen && (
+//         <div className="collaboration-modal-overlay" onClick={handleModalBackgroundClick}>
+//           <div className="collaboration-modal-content">
+//             <CollaborationReport 
+//               usernames={cards.map((card) => card.name)}
+//               onClose={handleCloseModal}
+//             />
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }

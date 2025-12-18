@@ -13,7 +13,7 @@ export function mapToCharacterCard(
     role: {
         role: data.role.role,
         // roleKr: data.role.roleKr,
-        roleKr: "이건 가짜 한국 롤",
+        roleKr: data.role.roleKr ?? "이건 가짜 한국 롤",
         type: data.role.type,
         description: data.role.description 
     },

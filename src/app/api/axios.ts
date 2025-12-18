@@ -10,7 +10,7 @@ if (!baseURL) {
 console.log(baseURL);
 
 export const api = axios.create({
-  baseURL: baseURL || window.location.origin,
+    baseURL: baseURL || window.location.origin,
   timeout: 60000,
   headers: {
     "Content-Type": "application/json",
