@@ -91,13 +91,15 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
         setLoading(true);
         setError(null);
         setApiProgress(5); // kickoff
+        setTeamReport(null);
 
         const backendResults = await fetchCardResult(normalizedUsernames);
         console.log(backendResults);
         const cardResults = backendResults.users;
         const teamReport = backendResults.team_report ?? null;
 
-        setIsSingleUser(cardResults.length === 1 || !teamReport);
+        const single = cardResults.length <= 1;
+        setIsSingleUser(single || !teamReport);
 
         const results = cardResults.map((result, index) => {
           const username = result.username ?? normalizedUsernames[index] ?? `user-${index + 1}`;
@@ -107,9 +109,9 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
 
         if (mounted) {
           setCards(results);
-          setTeamReport(teamReport);
+          setTeamReport(single ? null : teamReport);
           setApiProgress(100);
-          localStorage.setItem('lastResult', JSON.stringify({ cards: results, teamReport }));
+          localStorage.setItem('lastResult', JSON.stringify({ cards: results, teamReport: single ? null : teamReport }));
         }
       } catch (err) {
         const message = isAxiosError(err)
@@ -129,17 +131,20 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
 
         if (cached && mounted) {
           try {
-          const parsed = JSON.parse(cached) as unknown;
+            const parsed = JSON.parse(cached) as unknown;
             if (Array.isArray(parsed)) {
               setCards(parsed as CharacterCardData[]);
+              const single = (parsed as CharacterCardData[]).length <= 1;
               setTeamReport(null);
-              setIsSingleUser((parsed as CharacterCardData[]).length <= 1);
+              setIsSingleUser(single);
               setApiProgress(100);
             } else if (parsed && typeof parsed === 'object' && 'cards' in parsed) {
               const cachedObj = parsed as { cards: CharacterCardData[]; teamReport?: TeamReport | null };
               setCards(cachedObj.cards ?? []);
-              setTeamReport(cachedObj.teamReport ?? null);
-              setIsSingleUser((cachedObj.cards?.length ?? 0) <= 1 || !cachedObj.teamReport);
+              const single = (cachedObj.cards?.length ?? 0) <= 1;
+              const effectiveTeamReport = single ? null : cachedObj.teamReport ?? null;
+              setTeamReport(effectiveTeamReport);
+              setIsSingleUser(single || !effectiveTeamReport);
               setApiProgress(100);
             }
             return;
@@ -150,8 +155,9 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
 
         if (mockCards && mockCards.length > 0 && mounted) {
           setCards(mockCards);
+          const single = mockCards.length <= 1;
           setTeamReport(null);
-          setIsSingleUser(mockCards.length <= 1);
+          setIsSingleUser(single);
           setApiProgress(100);
           return;
         }
