@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState, type MouseEvent } from 'react';
+import { isAxiosError } from 'axios';
 import Slider from 'react-slick';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { CharacterCard, CharacterCardData } from './CharacterCard';
 import { CollaborationReport } from './CollaborationReport';
 import { LoadingScreen } from './LoadingScreen';
 import { fetchCardResult } from '../api/cardResultApi';
+import { API_BASE_URL } from '../api/axios';
 import { mapToCharacterCard } from '../api/cardResultMapper';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -59,6 +61,9 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
     let mounted = true;
     const normalizedUsernames = usernames.map((u) => u.trim()).filter(Boolean);
 
+    // Debug aid: log which usernames we are trying to load and the API base URL
+    console.debug('CardResultPage -> loading usernames', normalizedUsernames, 'base', API_BASE_URL);
+
     async function load() {
       try {
         setLoading(true);
@@ -78,7 +83,19 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
           localStorage.setItem('lastResult', JSON.stringify(results));
         }
       } catch (err) {
-        const message = err instanceof Error ? err.message : '결과를 불러오지 못했습니다.';
+        const message = isAxiosError(err)
+          ? `API 오류 (${err.response?.status ?? '네트워크'}) - ${err.message} [${API_BASE_URL}]`
+          : err instanceof Error
+            ? err.message
+            : '결과를 불러오지 못했습니다.';
+
+        console.error('CardResultPage -> load failed', {
+          err,
+          base: API_BASE_URL,
+          usernames: normalizedUsernames,
+          status: isAxiosError(err) ? err.response?.status : undefined,
+          data: isAxiosError(err) ? err.response?.data : undefined,
+        });
         const cached = localStorage.getItem('lastResult');
 
         if (cached && mounted) {
