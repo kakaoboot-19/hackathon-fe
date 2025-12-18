@@ -29,6 +29,10 @@ function validateBackendData(
 
   const typed = data as Partial<BackendCardResult>;
 
+  if (!typed.username) {
+    throw new Error(`(${username}) 사용자명이 누락되었습니다.`);
+  }
+
   if (!typed.role || !typed.role.role || !typed.role.roleKr || !typed.role.description) {
     throw new Error(`(${username}) 역할 정보가 누락되었습니다.`);
   }
@@ -71,8 +75,8 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
 
         const backendResults = await fetchCardResult(normalizedUsernames);
 
-        const results = backendResults.map((result, index) => {
-          const username = normalizedUsernames[index] ?? `user-${index + 1}`;
+        const results = backendResults.users.map((result, index) => {
+          const username = result.username ?? normalizedUsernames[index] ?? `user-${index + 1}`;
           validateBackendData(result, username);
           return mapToCharacterCard(username, index, result);
         });
