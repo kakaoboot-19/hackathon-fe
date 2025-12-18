@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Plus, X } from 'lucide-react';
 import { LoadingScreen } from './components/LoadingScreen';
 import { CardResultPage } from './components/CardResultPage';
@@ -7,7 +7,7 @@ import { type CharacterCardData } from './components/CharacterCard';
 
 type AppState = 'input' | 'loading' | 'result' | 'collaboration';
 
-const roleTypes = [
+const roleNames = [
   'NIGHT CODER',
   'CODE WARRIOR',
   'TECH WIZARD',
@@ -16,12 +16,17 @@ const roleTypes = [
   'FULL STACKER',
 ];
 
+const roleTypes = [
+    'INTP', 
+    'ENFP'
+]
+
 const roleDescriptions = [
   '달빛 아래 코드를 짜는 밤의 개발자',
   '빠르고 강력한 코드 전투의 달인',
   '마법같은 기술로 문제를 해결하는 마법사',
   '협업의 힘으로 팀을 이끄는 리더',
-  '하나의 분야에 깊이 파고드는 전문가',
+  '한 분야에 깊이 파고드는 전문가',
   '모든 영역을 넘나드는 만능 개발자',
 ];
 
@@ -53,6 +58,7 @@ const generateCardData = (username: string, index: number): CharacterCardData =>
     name,
     role: {
       type: roleTypes[index % roleTypes.length],
+      name: roleNames[index % roleNames.length],
       description: roleDescriptions[index % roleDescriptions.length],
     },
     image: {
@@ -71,11 +77,15 @@ const generateCardData = (username: string, index: number): CharacterCardData =>
 export default function App() {
   const [inputFields, setInputFields] = useState<string[]>(['']);
   const [appState, setAppState] = useState<AppState>('input');
-  const [cards, setCards] = useState<CharacterCardData[]>([]);
   const maxFields = 6;
-  const playerNames = cards.length > 0 
-    ? cards.map((card) => card.name) 
-    : inputFields.filter((field) => field.trim() !== '');
+  const playerNames = useMemo(
+    () => inputFields.map((field) => field.trim()).filter(Boolean),
+    [inputFields]
+  );
+  const mockCards = useMemo(
+    () => playerNames.map((name, index) => generateCardData(name, index)),
+    [playerNames]
+  );
 
   const handleAddField = () => {
     if (inputFields.length < maxFields) {
@@ -102,9 +112,6 @@ export default function App() {
     if (validFields.length === 0) {
       return; // Don't proceed if no valid usernames
     }
-
-    const generatedCards = validFields.map((name, index) => generateCardData(name, index));
-    setCards(generatedCards);
     
     setAppState('loading');
     
@@ -116,7 +123,6 @@ export default function App() {
 
   const handleReset = () => {
     setInputFields(['']);
-    setCards([]);
     setAppState('input');
   };
 
@@ -138,8 +144,7 @@ export default function App() {
     return (
       <CollaborationReport 
         usernames={playerNames} 
-        onBack={handleBackToCards}
-        onReset={handleReset} 
+        onClose={handleBackToCards}
       />
     );
   }
@@ -148,7 +153,8 @@ export default function App() {
   if (appState === 'result') {
     return (
       <CardResultPage 
-        cards={cards} 
+        usernames={playerNames} 
+        mockCards={mockCards}
         onReset={handleReset}
         onCollaboration={handleCollaboration}
       />

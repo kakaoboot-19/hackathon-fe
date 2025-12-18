@@ -4,6 +4,7 @@ export interface CharacterCardData {
   id: string;
   name: string;
   role: {
+    name: string;
     type: string;
     description: string;
   };
