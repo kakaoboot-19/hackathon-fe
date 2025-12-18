@@ -5,12 +5,12 @@ export interface CharacterCardData {
   name: string;
   role: {
     role: string;
+    roleKr: string;
     type: string;
     description: string;
   };
   image: {
     url: string;
-    description: string;
   };
   stats: {
     dayVsNight: number;
@@ -72,12 +72,12 @@ export function CharacterCard({ card, isFlipped, onClick }: CharacterCardProps) 
 
               {/* Role Type - Main Title */}
               <div className="card-role-type">
-                {card.role.role}
+                {card.role.roleKr}
               </div>
 
               {/* Role Description - Subtitle */}
               <div className="card-role-description">
-                {card.role.description}
+                {card.role.role}
               </div>
             </div>
 
@@ -94,7 +94,7 @@ export function CharacterCard({ card, isFlipped, onClick }: CharacterCardProps) 
             {/* Bottom 20% - Description */}
             <div className="card-description-section">
               <div className="card-description-box">
-                <p className="card-description-text">{card.image.description}</p>
+                <p className="card-description-text">{card.role.description}</p>
               </div>
             </div>
           </div>

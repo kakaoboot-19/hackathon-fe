@@ -2,12 +2,12 @@
 export interface BackendCardResult {
   role: {
     role: string;
+    roleKr: string;
     type: string;
     description: string;
   };
   image: {
     url: string;
-    description: string;
   };
   stats: {
     dayVsNight: number;
@@ -20,7 +20,6 @@ export interface BackendCardResult {
 import { api } from "./axios";
 
 export const fetchCardResult = async (username: string) => {
-    console.log("이거 들어온다");
     const res = await api.post<BackendCardResult>("/api/gitbti", { username });
     console.log(res.data);
     return res.data;

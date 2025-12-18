@@ -19,7 +19,16 @@ const roleNames = [
 const roleTypes = [
     'INTP', 
     'ENFP'
-]
+];
+
+const roleKrNames = [
+  '나이트 코더',
+  '코드 전투',
+  '테크 마법사',
+  '팀빌더',
+  '스페셜리스트',
+  '풀스태커',
+];
 
 const roleDescriptions = [
   '달빛 아래 코드를 짜는 밤의 개발자',
@@ -39,15 +48,6 @@ const images = [
   'https://images.unsplash.com/photo-1484417894907-623942c8ee29?w=400',
 ];
 
-const imageDescriptions = [
-  '고요한 밤, 키보드 소리만이 울려퍼지는 작업실',
-  '빠른 타이핑과 민첩한 사고로 코드를 완성하다',
-  '복잡한 알고리즘을 우아하게 풀어내는 능력자',
-  '함께 만들어가는 프로젝트, 시너지의 힘',
-  '한 분야의 깊이를 파고들어 최고가 되다',
-  '프론트엔드부터 백엔드까지 모두 섭렵한 개발자',
-];
-
 const generateCardData = (username: string, index: number): CharacterCardData => {
   const trimmedName = username.trim();
   const name = trimmedName !== '' ? trimmedName : `PLAYER_${index + 1}`;
@@ -58,12 +58,12 @@ const generateCardData = (username: string, index: number): CharacterCardData =>
     name,
     role: {
       type: roleTypes[index % roleTypes.length],
-      name: roleNames[index % roleNames.length],
+      role: roleNames[index % roleNames.length],
+      roleKr: roleKrNames[index % roleKrNames.length],
       description: roleDescriptions[index % roleDescriptions.length],
     },
     image: {
       url: images[index % images.length],
-      description: imageDescriptions[index % imageDescriptions.length],
     },
     stats: {
       dayVsNight: Math.floor(Math.random() * 60) + 20,

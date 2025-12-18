@@ -12,12 +12,13 @@ export function mapToCharacterCard(
     name: username,
     role: {
         role: data.role.role,
+        // roleKr: data.role.roleKr,
+        roleKr: "이건 가짜 한국 롤",
         type: data.role.type,
         description: data.role.description 
     },
     image: {
-        url: data.image.url,
-        description: data.image.description
+        url: data.image.url
     }, 
     stats: {
       dayVsNight: data.stats.dayVsNight,
