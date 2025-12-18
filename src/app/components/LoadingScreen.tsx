@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import './LoadingScreen.css';
+import ProgressBar from '@ramonak/react-progress-bar';
 
 const loadingSteps = [
   'ANALYZING GITHUB PROFILE',
@@ -10,10 +11,15 @@ const loadingSteps = [
   'FINALIZING DATA'
 ];
 
-export function LoadingScreen() {
+interface LoadingScreenProps {
+  estimatedDurationMs?: number;
+  apiProgress?: number; // 0~100
+}
+
+export function LoadingScreen({ estimatedDurationMs = 15000, apiProgress = 0 }: LoadingScreenProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [dots, setDots] = useState('');
-  const [progress, setProgress] = useState(0);
+  const [timeProgress, setTimeProgress] = useState(0);
 
   // Cycle through loading steps
   useEffect(() => {
@@ -33,17 +39,29 @@ export function LoadingScreen() {
     return () => clearInterval(dotInterval);
   }, []);
 
-  // Simulate progress
+  // Time-based progress: climb toward 85% over estimatedDurationMs, then wait for API
   useEffect(() => {
-    const progressInterval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) return 0;
-        return prev + Math.random() * 5;
-      });
-    }, 300);
+    const start = performance.now();
+    let raf: number;
 
-    return () => clearInterval(progressInterval);
-  }, []);
+    const tick = () => {
+      const elapsed = performance.now() - start;
+      const ratio = Math.min(elapsed / estimatedDurationMs, 1);
+      const next = Math.min(85, ratio * 85);
+      setTimeProgress((prev) => (next > prev ? next : prev));
+      raf = requestAnimationFrame(tick);
+    };
+
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [estimatedDurationMs]);
+
+  // Combine API progress with time progress
+  const displayProgress = useMemo(() => {
+    const clampedApi = Math.min(Math.max(apiProgress, 0), 100);
+    const combined = Math.max(timeProgress, clampedApi);
+    return Math.min(combined, 100);
+  }, [apiProgress, timeProgress]);
 
   return (
     <div className="loading-container">
@@ -110,7 +128,7 @@ export function LoadingScreen() {
               {/* Progress Label */}
               <div className="progress-label">
                 <span>PROGRESS</span>
-                <span>{Math.min(Math.floor(progress), 100)}%</span>
+                <span>{Math.min(Math.floor(displayProgress), 100)}%</span>
               </div>
 
               {/* Progress Bar Background */}
@@ -119,7 +137,7 @@ export function LoadingScreen() {
                 <div 
                   className="progress-bar-fill"
                   style={{
-                    width: `${Math.min(progress, 100)}%`
+                    width: `${Math.min(displayProgress, 100)}%`
                   }}
                 >
                   {/* Animated Stripes */}

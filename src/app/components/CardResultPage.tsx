@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type MouseEvent } from 'react';
+import { useEffect, useMemo, useRef, useState, type MouseEvent } from 'react';
 import { isAxiosError } from 'axios';
 import Slider from 'react-slick';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -58,8 +58,22 @@ type TeamReport = { synergy: string | string[]; warning: string | string[] };
 
 export function CardResultPage({ usernames, mockCards, onReset, onCollaboration }: CardResultPageProps) {
   const sliderRef = useRef<Slider>(null);
+  const normalizedUsernames = useMemo(
+    () => usernames.map((u) => u.trim()).filter(Boolean),
+    [usernames]
+  );
+  const estimatedDurationMs = useMemo(() => {
+    const count = normalizedUsernames.length || 1;
+    const min = 15000; // 1명 기준 약 15초
+    const max = 40000; // 6명 기준 약 40초
+    if (count <= 1) return min;
+    if (count >= 6) return max;
+    return min + ((count - 1) / (6 - 1)) * (max - min);
+  }, [normalizedUsernames]);
+
   const [cards, setCards] = useState<CharacterCardData[]>([]);
   const [teamReport, setTeamReport] = useState<TeamReport | null>(null);
+  const [apiProgress, setApiProgress] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [flippedCards, setFlippedCards] = useState<Set<string>>(new Set());
@@ -68,7 +82,6 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
 
   useEffect(() => {
     let mounted = true;
-    const normalizedUsernames = usernames.map((u) => u.trim()).filter(Boolean);
 
     // Debug aid: log which usernames we are trying to load and the API base URL
     console.debug('CardResultPage -> loading usernames', normalizedUsernames, 'base', API_BASE_URL);
@@ -77,6 +90,7 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
       try {
         setLoading(true);
         setError(null);
+        setApiProgress(5); // kickoff
 
         const backendResults = await fetchCardResult(normalizedUsernames);
         console.log(backendResults);
@@ -94,6 +108,7 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
         if (mounted) {
           setCards(results);
           setTeamReport(teamReport);
+          setApiProgress(100);
           localStorage.setItem('lastResult', JSON.stringify({ cards: results, teamReport }));
         }
       } catch (err) {
@@ -115,15 +130,17 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
         if (cached && mounted) {
           try {
           const parsed = JSON.parse(cached) as unknown;
-          if (Array.isArray(parsed)) {
-            setCards(parsed as CharacterCardData[]);
-            setTeamReport(null);
-            setIsSingleUser((parsed as CharacterCardData[]).length <= 1);
-          } else if (parsed && typeof parsed === 'object' && 'cards' in parsed) {
+            if (Array.isArray(parsed)) {
+              setCards(parsed as CharacterCardData[]);
+              setTeamReport(null);
+              setIsSingleUser((parsed as CharacterCardData[]).length <= 1);
+              setApiProgress(100);
+            } else if (parsed && typeof parsed === 'object' && 'cards' in parsed) {
               const cachedObj = parsed as { cards: CharacterCardData[]; teamReport?: TeamReport | null };
               setCards(cachedObj.cards ?? []);
               setTeamReport(cachedObj.teamReport ?? null);
               setIsSingleUser((cachedObj.cards?.length ?? 0) <= 1 || !cachedObj.teamReport);
+              setApiProgress(100);
             }
             return;
           } catch {
@@ -135,6 +152,7 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
           setCards(mockCards);
           setTeamReport(null);
           setIsSingleUser(mockCards.length <= 1);
+          setApiProgress(100);
           return;
         }
 
@@ -154,6 +172,7 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
       setCards(mockCards ?? []);
       setTeamReport(null);
       setIsSingleUser((mockCards?.length ?? 0) <= 1);
+      setApiProgress(100);
       setError(null);
       setLoading(false);
     }
@@ -161,7 +180,7 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
     return () => {
       mounted = false;
     };
-  }, [usernames, mockCards]);
+  }, [normalizedUsernames, mockCards]);
 
   const handleCardClick = (cardId: string, e: MouseEvent) => {
     // Prevent event bubbling to avoid multiple cards flipping
@@ -241,7 +260,7 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
   };
 
   if (loading) {
-    return <LoadingScreen />;
+    return <LoadingScreen estimatedDurationMs={estimatedDurationMs} apiProgress={apiProgress} />;
   }
 
   if (error) {
