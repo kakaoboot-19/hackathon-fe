@@ -1,1 +1,20 @@
+@import url('https://cdn.jsdelivr.net/gh/neodgm/neodgm-webfont@latest/neodgm/style.css');
+@import url('https://cdn.jsdelivr.net/gh/neodgm/neodgm-webfont@latest/neodgm_code/style.css');
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+:root {
+    --font-neo: 'NeoDunggeunmo', system-ui, sans-serif;
+    --font-press: 'Press Start 2P', cursive;
+}
+
+body {
+    font-family: var(--font-neo);
+}
+
+.font-neo {
+    font-family: var(--font-neo);
+}
+
+.font-press {
+    font-family: var(--font-press);
+}

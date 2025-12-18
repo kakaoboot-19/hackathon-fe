@@ -8,7 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Press Start 2P', cursive;
+  font-family: var(--font-neo);
   background-color: rgba(25, 24, 38, 1);
 }
 

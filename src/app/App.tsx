@@ -163,7 +163,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen w-full relative overflow-hidden" style={{ fontFamily: "'Press Start 2P', cursive", backgroundColor: 'rgba(25, 24, 38, 1)' }}>
+    <div className="min-h-screen w-full relative overflow-hidden" style={{ fontFamily: "var(--font-neo)", backgroundColor: 'rgba(25, 24, 38, 1)' }}>
       {/* Pixel Grid Pattern Overlay */}
       <div className="absolute inset-0 opacity-10" style={{
         backgroundImage: 'repeating-linear-gradient(0deg, rgba(242, 39, 134, 0.5) 0px, rgba(242, 39, 134, 0.5) 2px, transparent 2px, transparent 4px), repeating-linear-gradient(90deg, rgba(62, 178, 255, 0.5) 0px, rgba(62, 178, 255, 0.5) 2px, transparent 2px, transparent 4px)',
@@ -261,7 +261,7 @@ export default function App() {
                         color: 'rgba(62, 178, 255, 1)',
                         border: '3px solid rgba(62, 178, 255, 0.6)',
                         boxShadow: 'inset 0 2px 8px rgba(0, 0, 0, 0.5)',
-                        fontFamily: "'Press Start 2P', cursive",
+                        fontFamily: "var(--font-neo)",
                         lineHeight: '1.5'
                       }}
                       onFocus={(e) => {
@@ -311,7 +311,7 @@ export default function App() {
                     color: 'rgba(25, 24, 38, 1)',
                     border: '3px solid rgba(242, 229, 48, 1)',
                     boxShadow: '0 4px 0 rgba(140, 3, 117, 1)',
-                    fontFamily: "'Press Start 2P', cursive",
+                    fontFamily: 'var(--font-neo)',
                     lineHeight: '1.5'
                   }}
                   onMouseEnter={(e) => {
@@ -351,7 +351,7 @@ export default function App() {
                   color: 'rgba(242, 229, 48, 1)',
                   border: '4px solid rgba(242, 229, 48, 1)',
                   boxShadow: '0 6px 0 rgba(140, 3, 117, 1), 0 6px 0 4px rgba(242, 229, 48, 0.5)',
-                  fontFamily: "'Press Start 2P', cursive",
+                  fontFamily: 'var(--font-press)',
                   lineHeight: '1.5'
                 }}
                 onMouseEnter={(e) => {

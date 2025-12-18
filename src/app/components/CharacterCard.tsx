@@ -71,12 +71,12 @@ export function CharacterCard({ card, isFlipped, onClick }: CharacterCardProps) 
               </div>
 
               {/* Role Type - Main Title */}
-              <div className="card-role-type">
+              <div className="card-role-korean">
                 {card.role.roleKr}
               </div>
 
               {/* Role Description - Subtitle */}
-              <div className="card-role-description">
+              <div className="card-role-english">
                 {card.role.role}
               </div>
             </div>
