@@ -1,3 +1,6 @@
+import { useRef } from 'react';
+import { Download } from 'lucide-react';
+import { domToPng } from 'modern-screenshot';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 
 export interface CharacterCardData {
@@ -27,35 +30,87 @@ interface CharacterCardProps {
 }
 
 export function CharacterCard({ card, isFlipped, onClick }: CharacterCardProps) {
+  const frontRef = useRef<HTMLDivElement>(null);
+  const backRef = useRef<HTMLDivElement>(null);
 
-    // Calculate percentages for each stat pair
-    const calculateStats = (value: number) => {
-        const right = value; // 0-100
-        const left = 100 - value;
-        return { left, right };
+  const handleSave = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    const saveImage = async (element: HTMLElement, suffix: string) => {
+      try {
+        // Get the exact rendered size of the element
+        const rect = element.getBoundingClientRect();
+        const width = Math.ceil(rect.width);
+        const height = Math.ceil(rect.height);
+
+        const buffer = 40;
+
+        const dataUrl = await domToPng(element, {
+          scale: 3,
+          width: width + buffer,
+          height: height + buffer,
+          style: {
+            width: `${width}px`,
+            height: `${height}px`,
+
+            transform: 'none',
+            transformOrigin: 'top left',
+            position: 'relative',
+            margin: `${buffer / 2}px`,
+            left: '0',
+            top: '0',
+            boxSizing: 'border-box',
+            overflow: 'hidden',
+            borderRadius: 'inherit',
+          },
+        });
+        const link = document.createElement('a');
+        link.download = `${card.name}-${suffix}.png`;
+        link.href = dataUrl;
+        link.click();
+      } catch (error) {
+        console.error(`Failed to save ${suffix} image:`, error);
+      }
     };
 
-    const dayNightStats = calculateStats(card.stats.dayVsNight);
-    const steadyBurstStats = calculateStats(card.stats.steadyVsBurst);
-    const indieCrewStats = calculateStats(card.stats.indieVsCrew);
-    const specialGeneralStats = calculateStats(card.stats.specialVsGeneral);
+    if (frontRef.current) {
+      await saveImage(frontRef.current, 'front');
+    }
 
-    // Determine personality type based on stats 
-    const personalityType = [
-        card.stats.dayVsNight > 50 ? 'N' : 'D', // Night vs Day
-        card.stats.steadyVsBurst > 50 ? 'B' : 'S', // Burst vs Steady
-        card.stats.indieVsCrew > 50 ? 'C' : 'I', // Crew vs Indie
-        card.stats.specialVsGeneral > 50 ? 'G' : 'P', // General vs Professional
-    ].join('');
+    if (backRef.current) {
+      // 0.5s delay before downloading back side
+      setTimeout(() => saveImage(backRef.current!, 'back'), 500);
+    }
+  };
+
+  // Calculate percentages for each stat pair
+  const calculateStats = (value: number) => {
+    const right = value; // 0-100
+    const left = 100 - value;
+    return { left, right };
+  };
+
+  const dayNightStats = calculateStats(card.stats.dayVsNight);
+  const steadyBurstStats = calculateStats(card.stats.steadyVsBurst);
+  const indieCrewStats = calculateStats(card.stats.indieVsCrew);
+  const specialGeneralStats = calculateStats(card.stats.specialVsGeneral);
+
+  // Determine personality type based on stats 
+  const personalityType = [
+    card.stats.dayVsNight > 50 ? 'N' : 'D', // Night vs Day
+    card.stats.steadyVsBurst > 50 ? 'B' : 'S', // Burst vs Steady
+    card.stats.indieVsCrew > 50 ? 'C' : 'I', // Crew vs Indie
+    card.stats.specialVsGeneral > 50 ? 'G' : 'P', // General vs Professional
+  ].join('');
 
   return (
     <div className="character-card">
-      <div 
+      <div
         className={`character-card-flip-container ${isFlipped ? 'flipped' : ''}`}
         onClick={onClick}
       >
         {/* Front Side - Character Card */}
-        <div className="character-card-inner character-card-front">
+        <div className="character-card-inner character-card-front" ref={frontRef}>
           {/* Glow Effect */}
           <div className="card-glow"></div>
 
@@ -104,7 +159,7 @@ export function CharacterCard({ card, isFlipped, onClick }: CharacterCardProps) 
         </div>
 
         {/* Back Side - Stats Analysis */}
-        <div className="character-card-inner character-card-back">
+        <div className="character-card-inner character-card-back" ref={backRef}>
           {/* Card Content Wrapper */}
           <div className="card-content-wrapper">
             {/* Top 30% - Personality Type */}
@@ -214,14 +269,26 @@ export function CharacterCard({ card, isFlipped, onClick }: CharacterCardProps) 
               </div>
             </div>
           </div>
-                    {/* Flip Hint */}
+          {/* Flip Hint */}
           <div className="flip-hint-back">▼ FLIP ▼</div>
         </div>
       </div>
 
-      {/* Player Name Below Card */}
-      <div className="card-player-name">
-        {card.name}
+      <div className="character-card-actions">
+        {/* Player Name */}
+        <div className="card-player-name">
+          {card.name}
+        </div>
+
+        {/* Download Button */}
+        <button
+          className="card-download-button"
+          onClick={handleSave}
+          title="Save Card Images"
+        >
+          <Download size={16} />
+          <span>SAVE</span>
+        </button>
       </div>
     </div>
   );
