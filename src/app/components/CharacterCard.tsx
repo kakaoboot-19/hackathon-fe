@@ -110,8 +110,7 @@ export function CharacterCard({ card, isFlipped, onClick }: CharacterCardProps) 
             {/* Top 30% - Personality Type */}
             <div className="personality-type-section">
               <div className="personality-label">DEVELOPER TYPE</div>
-              <div className="personality-type-code">{personalityType}</div>
-              <div className="personality-type-name">{card.role.type}</div>
+              <div className="personality-type-code">{card.role.type}</div>
             </div>
 
             {/* Bottom 70% - Stats Bars */}

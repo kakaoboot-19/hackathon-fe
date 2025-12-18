@@ -57,6 +57,7 @@ function validateBackendData(
 export function CardResultPage({ usernames, mockCards, onReset, onCollaboration }: CardResultPageProps) {
   const sliderRef = useRef<Slider>(null);
   const [cards, setCards] = useState<CharacterCardData[]>([]);
+  const [teamReport, setTeamReport] = useState<{ synergy: string; warning: string } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [flippedCards, setFlippedCards] = useState<Set<string>>(new Set());
@@ -76,19 +77,18 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
 
         const backendResults = await fetchCardResult(normalizedUsernames);
         const cardResults = backendResults.users;
-        console.log(cardResults);
-        
+        const teamReport = backendResults.team_report ?? null;
+
         const results = cardResults.map((result, index) => {
-            console.log(result);
-          const username = result.username ?? `user-${index + 1}`;
+          const username = result.username ?? normalizedUsernames[index] ?? `user-${index + 1}`;
           validateBackendData(result, username);
           return mapToCharacterCard(username, index, result);
         });
 
-
         if (mounted) {
           setCards(results);
-          localStorage.setItem('lastResult', JSON.stringify(results));
+          setTeamReport(teamReport);
+          localStorage.setItem('lastResult', JSON.stringify({ cards: results, teamReport }));
         }
       } catch (err) {
         const message = isAxiosError(err)
@@ -108,8 +108,15 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
 
         if (cached && mounted) {
           try {
-            const parsed = JSON.parse(cached) as CharacterCardData[];
-            setCards(parsed);
+            const parsed = JSON.parse(cached) as unknown;
+            if (Array.isArray(parsed)) {
+              setCards(parsed as CharacterCardData[]);
+              setTeamReport(null);
+            } else if (parsed && typeof parsed === 'object' && 'cards' in parsed) {
+              const cachedObj = parsed as { cards: CharacterCardData[]; teamReport?: { synergy: string; warning: string } | null };
+              setCards(cachedObj.cards ?? []);
+              setTeamReport(cachedObj.teamReport ?? null);
+            }
             return;
           } catch {
             // If cache is broken, fall back to mock data or show error below
@@ -118,6 +125,7 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
 
         if (mockCards && mockCards.length > 0 && mounted) {
           setCards(mockCards);
+          setTeamReport(null);
           return;
         }
 
@@ -135,6 +143,7 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
       load();
     } else {
       setCards(mockCards ?? []);
+      setTeamReport(null);
       setError(null);
       setLoading(false);
     }
@@ -331,15 +340,21 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
         </div>
       </section>
 
-
-
-        {/* Actions */}
-        <div className="card-result-actions">
-          <button className="action-button" onClick={onReset}>
+      {/* ========== COLLABORATION REPORT SECTION ========== */}
+      <section className="collaboration-report-section">
+          <CollaborationReport 
+            usernames={usernames} 
+            teamReport={teamReport}
+          />
+      </section>
+      
+      {/* Actions */}
+      <div className="card-result-actions">
+        <button className="action-button" onClick={onReset}>
             ◀ CREATE NEW DECK ▶
-          </button>
-        </div>
+        </button>
       </div>
+    </div>
 
       {/* Collaboration Modal */}
       {isModalOpen && (
@@ -347,6 +362,7 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
           <div className="collaboration-modal-content">
             <CollaborationReport 
               usernames={cards.map((card) => card.name)}
+              teamReport={teamReport}
               onClose={handleCloseModal}
             />
           </div>
