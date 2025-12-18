@@ -5,7 +5,7 @@ import { CardResultPage } from './components/CardResultPage';
 import { CollaborationReport } from './components/CollaborationReport';
 import { type CharacterCardData } from './components/CharacterCard';
 import { mapToCharacterCard } from './api/cardResultMapper';
-import { type BackendCardResult } from './api/cardResultApi';
+import { fetchCardResult } from './api/cardResultApi';
 import {generateMockBackendResults} from './api/mock/mockCardResults';
 
 type AppState = 'input' | 'loading' | 'result' | 'collaboration';
@@ -13,7 +13,10 @@ type AppState = 'input' | 'loading' | 'result' | 'collaboration';
 export default function App() {
   const [inputFields, setInputFields] = useState<string[]>(['']);
   const [appState, setAppState] = useState<AppState>('input');
+  const [loadingProgress, setLoadingProgress] = useState({ completed: 0, total: 0 });
+  const [cardResults, setCardResults] = useState<CharacterCardData[]>([]);
   const maxFields = 6;
+
   const playerNames = useMemo(
     () =>
         inputFields
@@ -24,8 +27,8 @@ export default function App() {
 
     const mockBackendResults = useMemo(() => generateMockBackendResults(playerNames), [playerNames]);
     const mockCards: CharacterCardData[] = useMemo(() => mockBackendResults.map((result, index) =>
-        mapToCharacterCard(result.username, index, result)),
-        [mockBackendResults]
+        mapToCharacterCard(playerNames[index], index, result)),
+        [mockBackendResults, playerNames]
     );
 
   const handleAddField = () => {
@@ -47,20 +50,54 @@ export default function App() {
     setInputFields(newFields);
   };
 
-  const handleStartQuest = () => {
+  const handleStartQuest = async () => {
     // Filter out empty fields
     const validFields = inputFields.filter(field => field.trim() !== '');
     if (validFields.length === 0) {
       return; // Don't proceed if no valid usernames
     }
-    
-    // setAppState('loading');
-    setAppState('result');
-    
-    // Simulate loading time
-    // setTimeout(() => {
-    //   setAppState('result');
-    // }, 3000);
+
+    // 로딩 상태로 전환
+    setAppState('loading');
+    setLoadingProgress({ completed: 0, total: validFields.length });
+    setCardResults([]);
+
+    try {
+      // 모든 사용자의 데이터를 병렬로 가져오기
+      let completedCount = 0;
+
+      const promises = validFields.map(async (username, index) => {
+        try {
+          const backendResult = await fetchCardResult(username);
+          const cardData = mapToCharacterCard(username, index, backendResult);
+
+          completedCount++;
+          setLoadingProgress({ completed: completedCount, total: validFields.length });
+
+          return cardData;
+        } catch (error) {
+          console.error(`Failed to fetch data for ${username}:`, error);
+          // 에러 발생 시 목 데이터 사용
+          const mockResult = generateMockBackendResults([username])[0];
+          return mapToCharacterCard(username, index, mockResult);
+        }
+      });
+
+      const allResults = await Promise.all(promises);
+      setCardResults(allResults);
+
+      // 모든 API 완료 후 결과 화면으로 전환 (로딩 바가 100%에 도달할 때까지 대기)
+      // LoadingScreen의 onProgressComplete 콜백이 호출될 때 자동 전환됨
+    } catch (error) {
+      console.error('Failed to fetch card results:', error);
+      // 전체 실패 시 목 데이터 사용
+      const mockResults = generateMockBackendResults(validFields);
+      const mockCardsData = mockResults.map((result, index) =>
+        mapToCharacterCard(validFields[index], index, result)
+      );
+      setCardResults(mockCardsData);
+      setAppState('result');
+    }
   };
 
   const handleReset = () => {
@@ -78,14 +115,20 @@ export default function App() {
 
   // Show loading screen if loading
   if (appState === 'loading') {
-    return <LoadingScreen />;
+    return (
+      <LoadingScreen
+        totalUsers={loadingProgress.total}
+        completedCount={loadingProgress.completed}
+        onProgressComplete={() => setAppState('result')}
+      />
+    );
   }
 
   // Show collaboration report
   if (appState === 'collaboration') {
     return (
-      <CollaborationReport 
-        usernames={playerNames} 
+      <CollaborationReport
+        usernames={playerNames}
         onClose={handleBackToCards}
       />
     );
@@ -93,10 +136,13 @@ export default function App() {
 
   // Show result page if complete
   if (appState === 'result') {
+    // 실제 API 결과가 있으면 사용, 없으면 목 데이터 사용
+    const displayCards = cardResults.length > 0 ? cardResults : mockCards;
+
     return (
-      <CardResultPage 
-        usernames={playerNames} 
-        mockCards={mockCards}
+      <CardResultPage
+        usernames={playerNames}
+        mockCards={displayCards}
         onReset={handleReset}
         onCollaboration={handleCollaboration}
       />

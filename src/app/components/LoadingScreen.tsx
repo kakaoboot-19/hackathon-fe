@@ -2,27 +2,27 @@ import { useState, useEffect } from 'react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import './LoadingScreen.css';
 
-const loadingSteps = [
-  'ANALYZING GITHUB PROFILE',
-  'CALCULATING STATS',
-  'GENERATING CHARACTER',
-  'CREATING CARD',
-  'FINALIZING DATA'
-];
+interface LoadingScreenProps {
+  totalUsers: number;
+  completedCount: number;
+  onProgressComplete?: () => void;
+}
 
-export function LoadingScreen() {
-  const [currentStep, setCurrentStep] = useState(0);
+// 진행률에 따른 메시지
+const getLoadingMessage = (progress: number) => {
+  if (progress < 30) return 'PREPARING CHARACTERS';
+  if (progress < 60) return 'WARMING UP';
+  if (progress < 90) return 'READY TO MEET YOU';
+  return 'ALMOST THERE';
+};
+
+export function LoadingScreen({ totalUsers, completedCount, onProgressComplete }: LoadingScreenProps) {
   const [dots, setDots] = useState('');
   const [progress, setProgress] = useState(0);
+  const [startTime] = useState(Date.now());
 
-  // Cycle through loading steps
-  useEffect(() => {
-    const stepInterval = setInterval(() => {
-      setCurrentStep((prev) => (prev + 1) % loadingSteps.length);
-    }, 2000);
-
-    return () => clearInterval(stepInterval);
-  }, []);
+  // 예상 소요 시간 계산 (사용자 수에 따라 동적)
+  const estimatedSeconds = totalUsers * 5 + 10; // 1명=15초, 6명=40초
 
   // Animate dots
   useEffect(() => {
@@ -33,17 +33,37 @@ export function LoadingScreen() {
     return () => clearInterval(dotInterval);
   }, []);
 
-  // Simulate progress
+  // 진행률 업데이트 (시간 기반 + API 진행률)
   useEffect(() => {
     const progressInterval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) return 0;
-        return prev + Math.random() * 5;
-      });
-    }, 300);
+      const elapsedSeconds = (Date.now() - startTime) / 1000;
+
+      // 시간 기반 진행률 (0% → 85%)
+      const timeProgress = Math.min((elapsedSeconds / estimatedSeconds) * 85, 85);
+
+      // API 진행률 (85% → 99%)
+      const apiProgress = completedCount > 0
+        ? 85 + (completedCount / totalUsers) * 14
+        : 0;
+
+      // 최종 진행률: 둘 중 큰 값 사용
+      let newProgress = Math.max(timeProgress, apiProgress);
+
+      // 모든 API 완료 시 100%
+      if (completedCount === totalUsers && totalUsers > 0) {
+        newProgress = 100;
+      }
+
+      setProgress(newProgress);
+
+      // 100% 도달 시 콜백 호출
+      if (newProgress >= 100 && onProgressComplete) {
+        onProgressComplete();
+      }
+    }, 100);
 
     return () => clearInterval(progressInterval);
-  }, []);
+  }, [completedCount, totalUsers, startTime, estimatedSeconds, onProgressComplete]);
 
   return (
     <div className="loading-container">
@@ -108,7 +128,14 @@ export function LoadingScreen() {
             {/* Loading Text */}
             <div className="loading-text">
               <div className="loading-text-content">
-                {loadingSteps[currentStep]}{dots}
+                {getLoadingMessage(progress)}{dots}
+              </div>
+            </div>
+
+            {/* API Progress Info */}
+            <div className="loading-text" style={{ fontSize: '0.8em', opacity: 0.7, marginTop: '8px' }}>
+              <div className="loading-text-content">
+                LOADED: {completedCount} / {totalUsers}
               </div>
             </div>
 
