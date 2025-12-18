@@ -91,16 +91,10 @@ export function LoadingScreen() {
                     key={i}
                     className={`spinner-pixel ${i % 2 === 0 ? 'spinner-pixel-pink' : 'spinner-pixel-blue'}`}
                     style={{
-                      transform: `rotate(${i * 45}deg) translateY(-36px) translateX(-50%)`
+                      transform: `rotate(${i * 45}deg) translateY(-36px)`
                     }}
                   ></div>
                 ))}
-              </div>
-
-              {/* Center Core (Fixed, no animation) */}
-              <div className="spinner-core-wrapper">
-                <div className="spinner-core">
-                </div>
               </div>
             </div>
 

@@ -178,6 +178,8 @@
   box-shadow: 0 0 20px rgba(62, 178, 255, 1);
 }
 
+
+
 .spinner-core-wrapper {
   position: absolute;
   inset: 0;
@@ -190,9 +192,14 @@
   width: 2.5rem;
   height: 2.5rem;
   background-color: rgba(242, 229, 48, 1);
-  box-shadow: 0 0 0 3px rgba(140, 3, 117, 1),
-    0 0 30px rgba(242, 229, 48, 0.6),
-    inset 0 0 15px rgba(242, 39, 134, 0.4);
+
+  /* 픽셀 테두리 */
+  box-shadow:
+    0 0 0 3px rgba(140, 3, 117, 1),
+    0 0 0 6px rgba(242, 39, 134, 0.6),
+    0 0 12px rgba(242, 229, 48, 0.8);
+
+  image-rendering: pixelated;
 }
 
 @media (min-width: 768px) {
@@ -201,6 +208,7 @@
     height: 3.5rem;
   }
 }
+
 
 .spinner-core-inner {
   width: 100%;
