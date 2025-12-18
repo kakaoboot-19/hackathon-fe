@@ -20,6 +20,6 @@ export interface BackendCardResult {
 import { api } from "./axios";
 
 export const fetchCardResult = async (username: string) => {
-  const res = await api.get<BackendCardResult>(`/result/${username}`);
+  const res = await api.post<BackendCardResult>("/gitbiti", { username });
   return res.data;
 };
