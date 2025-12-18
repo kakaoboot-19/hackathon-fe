@@ -7,6 +7,8 @@ if (!baseURL) {
   console.warn("VITE_API_BASE_URL is not defined. API requests will use the current origin.");
 }
 
+console.log(baseURL);
+
 export const api = axios.create({
   baseURL: baseURL || window.location.origin,
   timeout: 100000000000,
