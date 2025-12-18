@@ -181,6 +181,7 @@ export function CharacterCard({ card, isFlipped, onClick }: CharacterCardProps) 
                 <ImageWithFallback
                   src={card.image.url}
                   alt={card.role.type}
+                  crossOrigin="anonymous"
                 />
               </div>
             </div>
