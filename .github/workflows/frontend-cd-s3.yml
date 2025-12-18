@@ -23,7 +23,7 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: nom run build
+        run: npm run build
         # env:
           # 환경변수 필요하면 추가
           # VITE_API_BASE_URL: "https://card.mika-yim.cloud"
