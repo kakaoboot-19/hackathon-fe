@@ -26,6 +26,27 @@ interface CharacterCardProps {
 }
 
 export function CharacterCard({ card, isFlipped, onClick }: CharacterCardProps) {
+
+    // Calculate percentages for each stat pair
+    const calculateStats = (value: number) => {
+        const right = value; // 0-100
+        const left = 100 - value;
+        return { left, right };
+    };
+
+    const dayNightStats = calculateStats(card.stats.dayVsNight);
+    const steadyBurstStats = calculateStats(card.stats.steadyVsBurst);
+    const indieCrewStats = calculateStats(card.stats.indieVsCrew);
+    const specialGeneralStats = calculateStats(card.stats.specialVsGeneral);
+
+    // Determine personality type based on stats 
+    const personalityType = [
+        card.stats.dayVsNight > 50 ? 'N' : 'D', // Night vs Day
+        card.stats.steadyVsBurst > 50 ? 'B' : 'S', // Burst vs Steady
+        card.stats.indieVsCrew > 50 ? 'C' : 'I', // Crew vs Indie
+        card.stats.specialVsGeneral > 50 ? 'G' : 'P', // General vs Professional
+    ].join('');
+
   return (
     <div className="character-card">
       <div 
@@ -83,76 +104,117 @@ export function CharacterCard({ card, isFlipped, onClick }: CharacterCardProps) 
 
         {/* Back Side - Stats Analysis */}
         <div className="character-card-inner character-card-back">
-          {/* Stats Header */}
-          <div className="stats-header">
-            <div className="stats-title">STATS ANALYSIS</div>
-            <div className="stats-name">{card.name}</div>
+          {/* Card Content Wrapper */}
+          <div className="card-content-wrapper">
+            {/* Top 30% - Personality Type */}
+            <div className="personality-type-section">
+              <div className="personality-label">DEVELOPER TYPE</div>
+              <div className="personality-type-code">{personalityType}</div>
+              <div className="personality-type-name">{card.role.type}</div>
+            </div>
+
+            {/* Bottom 70% - Stats Bars */}
+            <div className="stats-bars-section">
+
+              {/* Day vs Night */}
+              <div className="stat-bar-item">
+                <div className="stat-bar-labels">
+                  <div className={`stat-label stat-label-left ${dayNightStats.left > dayNightStats.right ? 'stat-dominant' : ''}`}>
+                    <span className="stat-label-text">낮활동</span>
+                    {dayNightStats.left > dayNightStats.right && <span className="stat-badge"></span>}
+                  </div>
+                  <div className={`stat-label stat-label-right ${dayNightStats.right > dayNightStats.left ? 'stat-dominant' : ''}`}>
+                    <span className="stat-label-text">밤활동</span>
+                    {dayNightStats.right > dayNightStats.left && <span className="stat-badge"></span>}
+                  </div>
+                </div>
+                <div className="stat-bar-container">
+                  <div className="stat-bar-bg">
+                    <div className="stat-bar-fill stat-bar-left" style={{ width: `${dayNightStats.left}%` }}>
+                      <span className="stat-value">{Math.round(dayNightStats.left)}%</span>
+                    </div>
+                    <div className="stat-bar-fill stat-bar-right" style={{ width: `${dayNightStats.right}%` }}>
+                      <span className="stat-value">{Math.round(dayNightStats.right)}%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Steady vs Burst */}
+              <div className="stat-bar-item">
+                <div className="stat-bar-labels">
+                  <div className={`stat-label stat-label-left ${steadyBurstStats.left > steadyBurstStats.right ? 'stat-dominant' : ''}`}>
+                    <span className="stat-label-text">꾸준함</span>
+                    {steadyBurstStats.left > steadyBurstStats.right && <span className="stat-badge"></span>}
+                  </div>
+                  <div className={`stat-label stat-label-right ${steadyBurstStats.right > steadyBurstStats.left ? 'stat-dominant' : ''}`}>
+                    <span className="stat-label-text">집중폭발</span>
+                    {steadyBurstStats.right > steadyBurstStats.left && <span className="stat-badge"></span>}
+                  </div>
+                </div>
+                <div className="stat-bar-container">
+                  <div className="stat-bar-bg">
+                    <div className="stat-bar-fill stat-bar-left" style={{ width: `${steadyBurstStats.left}%` }}>
+                      <span className="stat-value">{Math.round(steadyBurstStats.left)}%</span>
+                    </div>
+                    <div className="stat-bar-fill stat-bar-right" style={{ width: `${steadyBurstStats.right}%` }}>
+                      <span className="stat-value">{Math.round(steadyBurstStats.right)}%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Indie vs Crew */}
+              <div className="stat-bar-item">
+                <div className="stat-bar-labels">
+                  <div className={`stat-label stat-label-left ${indieCrewStats.left > indieCrewStats.right ? 'stat-dominant' : ''}`}>
+                    <span className="stat-label-text">독립작업</span>
+                    {indieCrewStats.left > indieCrewStats.right && <span className="stat-badge"></span>}
+                  </div>
+                  <div className={`stat-label stat-label-right ${indieCrewStats.right > indieCrewStats.left ? 'stat-dominant' : ''}`}>
+                    <span className="stat-label-text">팀협업</span>
+                    {indieCrewStats.right > indieCrewStats.left && <span className="stat-badge"></span>}
+                  </div>
+                </div>
+                <div className="stat-bar-container">
+                  <div className="stat-bar-bg">
+                    <div className="stat-bar-fill stat-bar-left" style={{ width: `${indieCrewStats.left}%` }}>
+                      <span className="stat-value">{Math.round(indieCrewStats.left)}%</span>
+                    </div>
+                    <div className="stat-bar-fill stat-bar-right" style={{ width: `${indieCrewStats.right}%` }}>
+                      <span className="stat-value">{Math.round(indieCrewStats.right)}%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Special vs General */}
+              <div className="stat-bar-item">
+                <div className="stat-bar-labels">
+                  <div className={`stat-label stat-label-left ${specialGeneralStats.left > specialGeneralStats.right ? 'stat-dominant' : ''}`}>
+                    <span className="stat-label-text">전문화</span>
+                    {specialGeneralStats.left > specialGeneralStats.right && <span className="stat-badge"></span>}
+                  </div>
+                  <div className={`stat-label stat-label-right ${specialGeneralStats.right > specialGeneralStats.left ? 'stat-dominant' : ''}`}>
+                    <span className="stat-label-text">범용성</span>
+                    {specialGeneralStats.right > specialGeneralStats.left && <span className="stat-badge"></span>}
+                  </div>
+                </div>
+                <div className="stat-bar-container">
+                  <div className="stat-bar-bg">
+                    <div className="stat-bar-fill stat-bar-left" style={{ width: `${specialGeneralStats.left}%` }}>
+                      <span className="stat-value">{Math.round(specialGeneralStats.left)}%</span>
+                    </div>
+                    <div className="stat-bar-fill stat-bar-right" style={{ width: `${specialGeneralStats.right}%` }}>
+                      <span className="stat-value">{Math.round(specialGeneralStats.right)}%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-
-          {/* Stats Spectrum Area */}
-          <div className="stats-spectrum-area">
-            
-            {/* Day vs Night */}
-            <div className="spectrum-item">
-              <div className="spectrum-labels">
-                <span className="spectrum-label-left">낮활동</span>
-                <span className="spectrum-label-right">밤활동</span>
-              </div>
-              <div className="spectrum-bar">
-                <div 
-                  className="spectrum-indicator"
-                  style={{ left: `${card.stats.dayVsNight}%` }}
-                ></div>
-              </div>
-            </div>
-
-            {/* Steady vs Burst */}
-            <div className="spectrum-item">
-              <div className="spectrum-labels">
-                <span className="spectrum-label-left">꾸준함</span>
-                <span className="spectrum-label-right">집중폭발</span>
-              </div>
-              <div className="spectrum-bar">
-                <div 
-                  className="spectrum-indicator"
-                  style={{ left: `${card.stats.steadyVsBurst}%` }}
-                ></div>
-              </div>
-            </div>
-
-            {/* Indie vs Crew */}
-            <div className="spectrum-item">
-              <div className="spectrum-labels">
-                <span className="spectrum-label-left">독립작업</span>
-                <span className="spectrum-label-right">팀협업</span>
-              </div>
-              <div className="spectrum-bar">
-                <div 
-                  className="spectrum-indicator"
-                  style={{ left: `${card.stats.indieVsCrew}%` }}
-                ></div>
-              </div>
-            </div>
-
-            {/* Special vs General */}
-            <div className="spectrum-item">
-              <div className="spectrum-labels">
-                <span className="spectrum-label-left">전문화</span>
-                <span className="spectrum-label-right">범용성</span>
-              </div>
-              <div className="spectrum-bar">
-                <div 
-                  className="spectrum-indicator"
-                  style={{ left: `${card.stats.specialVsGeneral}%` }}
-                ></div>
-              </div>
-            </div>
-
-            {/* Flip Hint */}
-            <div className="flip-hint-back">
-              ▼ FLIP ▼
-            </div>
-          </div>
+                    {/* Flip Hint */}
+          <div className="flip-hint-back">▼ FLIP ▼</div>
         </div>
       </div>
 
