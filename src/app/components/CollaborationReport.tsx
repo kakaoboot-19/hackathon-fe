@@ -36,7 +36,7 @@ export function CollaborationReport({ usernames, teamReport }: CollaborationRepo
       <div className="collaboration-block collaboration-synergy-block">
         <div className="collaboration-block-header">
           <div className="collaboration-block-icon">
-            <Sparkles size={28} color="rgba(242, 229, 48, 1)" />
+            <Sparkles size={28} color="rgb(233, 212, 48)" />
           </div>
           <h3 className="collaboration-block-title">우리 팀이 더 시너지를 낼 수 있는 방법은?</h3>
         </div>
