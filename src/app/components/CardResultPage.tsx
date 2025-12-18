@@ -62,6 +62,7 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
   const [error, setError] = useState<string | null>(null);
   const [flippedCards, setFlippedCards] = useState<Set<string>>(new Set());
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSingleUser, setIsSingleUser] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -79,6 +80,8 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
         console.log(backendResults);
         const cardResults = backendResults.users;
         const teamReport = backendResults.team_report ?? null;
+
+        setIsSingleUser(cardResults.length === 1 || !teamReport);
 
         const results = cardResults.map((result, index) => {
           const username = result.username ?? normalizedUsernames[index] ?? `user-${index + 1}`;
@@ -113,10 +116,12 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
             if (Array.isArray(parsed)) {
               setCards(parsed as CharacterCardData[]);
               setTeamReport(null);
+              setIsSingleUser((parsed as CharacterCardData[]).length <= 1);
             } else if (parsed && typeof parsed === 'object' && 'cards' in parsed) {
               const cachedObj = parsed as { cards: CharacterCardData[]; teamReport?: { synergy: string; warning: string } | null };
               setCards(cachedObj.cards ?? []);
               setTeamReport(cachedObj.teamReport ?? null);
+              setIsSingleUser((cachedObj.cards?.length ?? 0) <= 1 || !cachedObj.teamReport);
             }
             return;
           } catch {
@@ -127,6 +132,7 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
         if (mockCards && mockCards.length > 0 && mounted) {
           setCards(mockCards);
           setTeamReport(null);
+          setIsSingleUser(mockCards.length <= 1);
           return;
         }
 
@@ -145,6 +151,7 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
     } else {
       setCards(mockCards ?? []);
       setTeamReport(null);
+      setIsSingleUser((mockCards?.length ?? 0) <= 1);
       setError(null);
       setLoading(false);
     }
@@ -324,23 +331,15 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
           </Slider>
         </div>
       </section>
-
-      {/* ========== TRANSFER COMPONENT ========== */}
-      <section className="transfer-section">
-        <div className="transfer-divider">
-        <span className="transfer-pixel-line"></span>
-        <span className="transfer-text">당신의 팀을 위한 AI 전략</span>
-        <span className="transfer-pixel-line"></span>
-        </div>
-      </section>
-
       {/* ========== COLLABORATION REPORT SECTION ========== */}
-      <section className="collaboration-report-section">
-          <CollaborationReport 
-            usernames={usernames} 
+      {!isSingleUser && teamReport && (
+        <section className="collaboration-report-section">
+          <CollaborationReport
+            usernames={usernames}
             teamReport={teamReport}
           />
-      </section>
+        </section>
+      )}
       
       {/* Actions */}
       <div className="card-result-actions">

@@ -162,7 +162,7 @@
 }
 
 .card-result-subtitle {
-  font-size: clamp(0.5rem, 2vw, 0.875rem);
+  font-size: clamp(0.5rem, 3vw, 0.875rem);
   color: rgba(62, 178, 255, 1);
   text-shadow: 2px 2px 0px rgba(25, 24, 38, 1);
   line-height: 1.6;
@@ -180,6 +180,7 @@
   max-width: min(90vw, 380px);
   padding: 0 1vw;
   outline: none;
+  font-family: var(--font-neo);
 }
 
 @media (max-width: 639px) {
@@ -374,11 +375,11 @@
   justify-content: center;
   align-items: flex-start;
   padding: 4% 5%;
-  border-bottom: clamp(3px, 0.75vw, 4px) solid rgba(139, 90, 43, 1);
+  border-bottom: clamp(1px, 0.75vw, 4px) solid rgba(139, 90, 43, 1);
   background: linear-gradient(to bottom, rgba(255, 235, 200, 1), rgba(245, 225, 190, 1));
   position: relative;
   flex-shrink: 0;
-  gap: 2%;
+  gap: 5%;
 }
 
 /* Decorative corners */
@@ -415,7 +416,7 @@
 
 /* GitHub Name Tag */
 .card-name-tag {
-  font-size: clamp(0.5rem, 1.5vw, 0.75rem);
+  font-size: clamp(0.5rem, 3vw, 0.75rem);
   font-weight: bold;
   color: rgba(70, 50, 30, 1);
   background-color: rgba(255, 220, 150, 0.6);
@@ -447,7 +448,7 @@
 
 /* Role Description - Subtitle */
 .card-role-english {
-  font-size: clamp(0.5rem, 1.5vw, 0.875rem);
+  font-size: clamp(0.5rem, 4vw, 0.875rem);
   font-weight: bold;
   color: rgba(70, 50, 30, 1);
   text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.3);
@@ -506,7 +507,7 @@
 }
 
 .card-description-text {
-  font-size: clamp(0.5rem, 1.5vw, 0.875rem);
+  font-size: clamp(0.5rem, 4vw, 0.875rem);
   font-weight: bold;
   color: rgba(70, 50, 30, 1);
   line-height: 1.6;
@@ -536,7 +537,8 @@
 
 /* Personality Type Section - Top 30% */
 .personality-type-section {
-  height: 30%;
+    font-family: var(--font-neo);
+  height: 25%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -581,7 +583,7 @@
 }
 
 .personality-type-code {
-  font-size: clamp(2rem, 6vw, 3rem);
+  font-size: clamp(2rem, 10vw, 3rem);
   font-weight: bold;
   color: rgba(205, 92, 92, 1);
   text-shadow: 
@@ -604,7 +606,7 @@
 
 /* Stats Bars Section - Bottom 70% */
 .stats-bars-section {
-  height: 70%;
+  height: 75%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -748,7 +750,7 @@
 
 /* Stat Value Text */
 .stat-value {
-  font-size: clamp(0.5rem, 1.5vw, 0.75rem);
+  font-size: clamp(0.5rem, 2.5vw, 0.75rem);
   font-weight: bold;
   color: rgba(25, 24, 38, 1);
   text-shadow: 
@@ -1252,7 +1254,8 @@
 }
 
 .transfer-text {
-  font-size: clamp(0.625rem, 2vw, 1rem);
+    font-family: var(--font-neo);
+  font-size: clamp(0.625rem, 10vw, 1rem);
   font-weight: bold;
   color: rgba(62, 178, 255, 1);
   text-shadow: 2px 2px 0px rgba(140, 3, 117, 1);
