@@ -30,5 +30,6 @@ import { api } from "./axios";
 
 export const fetchCardResult = async (usernames: string[]) => {
   const res = await api.post<BackendBatchResponse>("/api/gitbti/batch", { usernames });
+  console.log(res);
   return res.data;
 };
