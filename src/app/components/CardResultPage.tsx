@@ -76,6 +76,7 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
         setError(null);
 
         const backendResults = await fetchCardResult(normalizedUsernames);
+        console.log(backendResults);
         const cardResults = backendResults.users;
         const teamReport = backendResults.team_report ?? null;
 
@@ -282,13 +283,6 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
 
       {/* Main Content */}
       <div className="card-result-content">
-        {/* Collaboration Strategy Button - Top */}
-        <div className="collaboration-button-container">
-          <button className="collaboration-strategy-button" onClick={handleOpenModal}>
-            ▶ 협업 전략 수립하기 ◀
-          </button>
-        </div>
-
       {/* ========== CARD RESULT SECTION ========== */}
       <section className="card-result-section">
         {/* Title */}
@@ -355,19 +349,6 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
         </button>
       </div>
     </div>
-
-      {/* Collaboration Modal */}
-      {isModalOpen && (
-        <div className="collaboration-modal-overlay" onClick={handleModalBackgroundClick}>
-          <div className="collaboration-modal-content">
-            <CollaborationReport 
-              usernames={cards.map((card) => card.name)}
-              teamReport={teamReport}
-              onClose={handleCloseModal}
-            />
-          </div>
-        </div>
-      )}
     </div>
   );
 }

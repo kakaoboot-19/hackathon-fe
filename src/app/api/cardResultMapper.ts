@@ -14,8 +14,8 @@ export function mapToCharacterCard(
     id: resolvedUsername,
     name: resolvedUsername,
     role: {
-        role: data.role.role ?? data.role.role_en ?? resolvedUsername,
-        roleKr: data.role.role_kr ?? data.role.role ?? data.role.role_en ?? resolvedUsername,
+        role_en: data.role.role_en ?? resolvedUsername,
+        role_kr: data.role.role_kr ?? resolvedUsername,
         type: data.role.type,
         description: data.role.description 
     },

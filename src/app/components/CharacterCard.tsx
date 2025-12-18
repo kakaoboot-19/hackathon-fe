@@ -42,7 +42,7 @@ export function CharacterCard({ card, isFlipped, onClick }: CharacterCardProps) 
 
     // Determine personality type based on stats 
     const personalityType = [
-        card.stats.dayVsNight > 50 ? 'N' : 'D', // Night vs Day
+        card.stats.dayVsNight < 50 ? 'N' : 'D', // Night vs Day
         card.stats.steadyVsBurst > 50 ? 'B' : 'S', // Burst vs Steady
         card.stats.indieVsCrew > 50 ? 'C' : 'I', // Crew vs Indie
         card.stats.specialVsGeneral > 50 ? 'G' : 'P', // General vs Professional
@@ -120,11 +120,11 @@ export function CharacterCard({ card, isFlipped, onClick }: CharacterCardProps) 
               <div className="stat-bar-item">
                 <div className="stat-bar-labels">
                   <div className={`stat-label stat-label-left ${dayNightStats.left > dayNightStats.right ? 'stat-dominant' : ''}`}>
-                    <span className="stat-label-text">낮활동</span>
+                    <span className="stat-label-text">☀️ 아침형</span>
                     {dayNightStats.left > dayNightStats.right && <span className="stat-badge"></span>}
                   </div>
                   <div className={`stat-label stat-label-right ${dayNightStats.right > dayNightStats.left ? 'stat-dominant' : ''}`}>
-                    <span className="stat-label-text">밤활동</span>
+                    <span className="stat-label-text">🌙 야행성</span>
                     {dayNightStats.right > dayNightStats.left && <span className="stat-badge"></span>}
                   </div>
                 </div>
@@ -144,11 +144,11 @@ export function CharacterCard({ card, isFlipped, onClick }: CharacterCardProps) 
               <div className="stat-bar-item">
                 <div className="stat-bar-labels">
                   <div className={`stat-label stat-label-left ${steadyBurstStats.left > steadyBurstStats.right ? 'stat-dominant' : ''}`}>
-                    <span className="stat-label-text">꾸준함</span>
+                    <span className="stat-label-text">🧩 차곡차곡</span>
                     {steadyBurstStats.left > steadyBurstStats.right && <span className="stat-badge"></span>}
                   </div>
                   <div className={`stat-label stat-label-right ${steadyBurstStats.right > steadyBurstStats.left ? 'stat-dominant' : ''}`}>
-                    <span className="stat-label-text">집중폭발</span>
+                    <span className="stat-label-text">💥 몰아치기</span>
                     {steadyBurstStats.right > steadyBurstStats.left && <span className="stat-badge"></span>}
                   </div>
                 </div>
@@ -168,11 +168,11 @@ export function CharacterCard({ card, isFlipped, onClick }: CharacterCardProps) 
               <div className="stat-bar-item">
                 <div className="stat-bar-labels">
                   <div className={`stat-label stat-label-left ${indieCrewStats.left > indieCrewStats.right ? 'stat-dominant' : ''}`}>
-                    <span className="stat-label-text">독립작업</span>
+                    <span className="stat-label-text">👥 파티 플레이</span>
                     {indieCrewStats.left > indieCrewStats.right && <span className="stat-badge"></span>}
                   </div>
                   <div className={`stat-label stat-label-right ${indieCrewStats.right > indieCrewStats.left ? 'stat-dominant' : ''}`}>
-                    <span className="stat-label-text">팀협업</span>
+                    <span className="stat-label-text">👤 솔로 플레이</span>
                     {indieCrewStats.right > indieCrewStats.left && <span className="stat-badge"></span>}
                   </div>
                 </div>
@@ -192,11 +192,11 @@ export function CharacterCard({ card, isFlipped, onClick }: CharacterCardProps) 
               <div className="stat-bar-item">
                 <div className="stat-bar-labels">
                   <div className={`stat-label stat-label-left ${specialGeneralStats.left > specialGeneralStats.right ? 'stat-dominant' : ''}`}>
-                    <span className="stat-label-text">전문화</span>
+                    <span className="stat-label-text">🎯 한 우물</span>
                     {specialGeneralStats.left > specialGeneralStats.right && <span className="stat-badge"></span>}
                   </div>
                   <div className={`stat-label stat-label-right ${specialGeneralStats.right > specialGeneralStats.left ? 'stat-dominant' : ''}`}>
-                    <span className="stat-label-text">범용성</span>
+                    <span className="stat-label-text">🧰 올라운더</span>
                     {specialGeneralStats.right > specialGeneralStats.left && <span className="stat-badge"></span>}
                   </div>
                 </div>
@@ -218,10 +218,6 @@ export function CharacterCard({ card, isFlipped, onClick }: CharacterCardProps) 
         </div>
       </div>
 
-      {/* Player Name Below Card */}
-      <div className="card-player-name">
-        {card.name}
-      </div>
     </div>
   );
 }

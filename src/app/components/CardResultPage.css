@@ -646,7 +646,7 @@
 }
 
 .stat-label-text {
-  font-size: clamp(0.5rem, 1.5vw, 0.75rem);
+  font-size: clamp(0.5rem, 3vw, 0.75rem);
   font-weight: bold;
   color: rgba(70, 50, 30, 1);
   text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.3);
@@ -655,7 +655,7 @@
 }
 
 /* Stat Badge - Circular background for dominant trait */
-.stat-badge {
+/* .stat-badge {
   display: inline-block;
   width: clamp(0.75rem, 2.5vw, 1.25rem);
   height: clamp(0.75rem, 2.5vw, 1.25rem);
@@ -668,7 +668,7 @@
     inset 0 1px 2px rgba(255, 255, 255, 0.5);
   animation: badgePulse 2s ease-in-out infinite;
   flex-shrink: 0;
-}
+} */
 
 @keyframes badgePulse {
   0%, 100% {
@@ -690,9 +690,14 @@
 
 /* Dominant stat text styling */
 .stat-dominant .stat-label-text {
-  color: rgba(139, 90, 43, 1);
+  padding: 3px 8px;
+  background-color: rgba(242, 229, 48, 1);
+  color: rgba(25, 24, 38, 1);
   font-weight: bold;
+  border: 2px solid rgba(140, 3, 117, 1);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
 }
+
 
 /* Stat Bar Container */
 .stat-bar-container {
@@ -1181,8 +1186,8 @@
 /* Transfer Section */
 .transfer-section {
   position: relative;
-  margin: 8vh 0;
-  padding: 4vh 2vw;
+  margin: 2vh 0;
+  padding: 1vh 2vw;
 }
 
 .transfer-divider {
