@@ -37,39 +37,80 @@ export function CharacterCard({ card, isFlipped, onClick }: CharacterCardProps) 
     e.stopPropagation();
 
     const saveImage = async (element: HTMLElement, suffix: string) => {
+      const iframe = document.createElement('iframe');
+      Object.assign(iframe.style, {
+        position: 'fixed',
+        left: '-9999px',
+        top: '0',
+        width: '1440px',
+        height: '900px',
+        border: 'none',
+        zIndex: '-9999',
+        visibility: 'hidden',
+      });
+      document.body.appendChild(iframe);
+
       try {
-        // Get the exact rendered size of the element
-        const rect = element.getBoundingClientRect();
-        const width = Math.ceil(rect.width);
-        const height = Math.ceil(rect.height);
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+        if (!iframeDoc) throw new Error('Iframe document not found');
 
-        const buffer = 40;
+        const styles = Array.from(document.querySelectorAll('style, link[rel="stylesheet"]'));
+        styles.forEach(style => {
+            iframeDoc.head.appendChild(style.cloneNode(true));
+        });
+        
+        const clonedElement = element.cloneNode(true) as HTMLElement;
+        const width = 400;
+        const height = 600;
+        const buffer = 100;
 
-        const dataUrl = await domToPng(element, {
+        Object.assign(clonedElement.style, {
+            width: `${width}px`,
+            height: `${height}px`,
+            margin: `${buffer / 2}px`,
+            transform: 'none',
+            position: 'absolute',
+            top: '0',
+            left: '0',
+            maxWidth: 'none',
+            maxHeight: 'none',
+            overflow: 'hidden',
+            borderRadius: 'inherit',
+            boxSizing: 'border-box'
+        });
+
+        const wrapper = iframeDoc.createElement('div');
+        Object.assign(wrapper.style, {
+            position: 'relative',
+            width: `${width + buffer}px`,
+            height: `${height + buffer}px`,
+            overflow: 'hidden'
+        });
+        wrapper.appendChild(clonedElement);
+        iframeDoc.body.appendChild(wrapper);
+
+        await new Promise(resolve => setTimeout(resolve, 800));
+
+        const dataUrl = await domToPng(wrapper, {
           scale: 3,
           width: width + buffer,
           height: height + buffer,
           style: {
-            width: `${width}px`,
-            height: `${height}px`,
-
             transform: 'none',
             transformOrigin: 'top left',
-            position: 'relative',
-            margin: `${buffer / 2}px`,
-            left: '0',
-            top: '0',
-            boxSizing: 'border-box',
-            overflow: 'hidden',
-            borderRadius: 'inherit',
           },
         });
+
         const link = document.createElement('a');
         link.download = `${card.name}-${suffix}.png`;
         link.href = dataUrl;
         link.click();
       } catch (error) {
         console.error(`Failed to save ${suffix} image:`, error);
+      } finally {
+        if (document.body.contains(iframe)) {
+             document.body.removeChild(iframe);
+        }
       }
     };
 
@@ -78,12 +119,10 @@ export function CharacterCard({ card, isFlipped, onClick }: CharacterCardProps) 
     }
 
     if (backRef.current) {
-      // 0.5s delay before downloading back side
       setTimeout(() => saveImage(backRef.current!, 'back'), 500);
     }
   };
 
-  // Calculate percentages for each stat pair
   const calculateStats = (value: number) => {
     const right = value; // 0-100
     const left = 100 - value;
