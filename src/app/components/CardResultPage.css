@@ -1,0 +1,1049 @@
+/* Card Result Page Styles - Fully Responsive */
+
+.card-result-container {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-family: 'Press Start 2P', cursive;
+  background-color: rgba(25, 24, 38, 1);
+  padding: 2vh 2vw;
+}
+
+@media (min-width: 640px) {
+  .card-result-container {
+    padding: 3vh 3vw;
+  }
+}
+
+@media (min-width: 768px) {
+  .card-result-container {
+    padding: 4vh 4vw;
+  }
+}
+
+@media (min-width: 1024px) {
+  .card-result-container {
+    padding: 5vh 5vw;
+  }
+}
+
+.card-result-background {
+  position: absolute;
+  inset: 0;
+  opacity: 0.2;
+}
+
+.card-result-grid-pattern {
+  position: absolute;
+  inset: 0;
+  opacity: 0.15;
+  background-image: repeating-linear-gradient(0deg, rgba(242, 39, 134, 0.5) 0px, rgba(242, 39, 134, 0.5) 2px, transparent 2px, transparent 4px),
+    repeating-linear-gradient(90deg, rgba(62, 178, 255, 0.5) 0px, rgba(62, 178, 255, 0.5) 2px, transparent 2px, transparent 4px);
+  background-size: 4px 4px;
+}
+
+.card-result-content {
+  position: relative;
+  z-index: 10;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.card-result-title {
+  text-align: center;
+  margin-bottom: 4vh;
+}
+
+@media (min-width: 768px) {
+  .card-result-title {
+    margin-bottom: 5vh;
+  }
+}
+
+.card-result-title h1 {
+  font-size: clamp(1rem, 4vw, 2.25rem);
+  margin-bottom: 1vh;
+  color: rgba(242, 229, 48, 1);
+  text-shadow: 3px 3px 0px rgba(140, 3, 117, 1), 6px 6px 0px rgba(25, 24, 38, 0.5);
+  line-height: 1.4;
+}
+
+@media (min-width: 768px) {
+  .card-result-title h1 {
+    text-shadow: 4px 4px 0px rgba(140, 3, 117, 1), 8px 8px 0px rgba(25, 24, 38, 0.5);
+  }
+}
+
+.card-result-subtitle {
+  font-size: clamp(0.5rem, 2vw, 0.875rem);
+  color: rgba(62, 178, 255, 1);
+  text-shadow: 2px 2px 0px rgba(25, 24, 38, 1);
+  line-height: 1.6;
+}
+
+/* Slider Container */
+.card-slider-container {
+  position: relative;
+  padding: 3vh 0;
+}
+
+/* Character Card */
+.character-card {
+  margin: 0 auto;
+  max-width: min(90vw, 380px);
+  padding: 0 1vw;
+  outline: none;
+}
+
+@media (max-width: 639px) {
+  .character-card {
+    max-width: min(95vw, 320px);
+    padding: 0 0.5vw;
+  }
+}
+
+@media (min-width: 640px) {
+  .character-card {
+    max-width: min(85vw, 360px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .character-card {
+    max-width: min(80vw, 400px);
+  }
+}
+
+/* Card Flip Container - RESPONSIVE HEIGHT */
+.character-card-flip-container {
+  position: relative;
+  width: 100%;
+  height: min(75vh, 520px);
+  cursor: pointer;
+  perspective: 1000px;
+  transition: transform 400ms ease-out;
+  animation: floatingCard 3s ease-in-out infinite;
+}
+
+@media (min-width: 768px) {
+  .character-card-flip-container {
+    height: min(70vh, 580px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .character-card-flip-container {
+    height: min(65vh, 600px);
+  }
+}
+
+/* Floating Animation */
+@keyframes floatingCard {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Hover effect - stop floating and lift up */
+.character-card-flip-container:hover {
+  animation: none;
+  transform: translateY(-15px) scale(1.02);
+  filter: drop-shadow(0 15px 30px rgba(242, 229, 48, 0.3));
+}
+
+.character-card-flip-container.flipped .character-card-front {
+  transform: rotateY(180deg);
+  animation: flipOut 0.8s ease-in-out;
+}
+
+.character-card-flip-container.flipped .character-card-back {
+  transform: rotateY(0deg);
+  animation: flipIn 0.8s ease-in-out;
+}
+
+/* Flip Animations */
+@keyframes flipOut {
+  0% {
+    transform: rotateY(0deg) scale(1);
+  }
+  50% {
+    transform: rotateY(90deg) scale(1.05);
+  }
+  100% {
+    transform: rotateY(180deg) scale(1);
+  }
+}
+
+@keyframes flipIn {
+  0% {
+    transform: rotateY(-180deg) scale(1);
+  }
+  50% {
+    transform: rotateY(-90deg) scale(1.05);
+  }
+  100% {
+    transform: rotateY(0deg) scale(1);
+  }
+}
+
+.character-card-inner {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  background-color: rgba(245, 235, 210, 1);
+  border: clamp(4px, 1vw, 6px) solid rgba(139, 90, 43, 1);
+  box-shadow: 
+    inset 0 0 0 clamp(2px, 0.5vw, 4px) rgba(255, 220, 150, 1),
+    inset 0 0 0 clamp(4px, 1vw, 8px) rgba(139, 90, 43, 1),
+    0 8px 20px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  transition: all 0.3s ease-out;
+}
+
+/* Front card - no scroll */
+.character-card-front {
+  overflow: hidden;
+  transform: rotateY(0deg);
+  transform-style: preserve-3d;
+}
+
+/* Back card - no scroll */
+.character-card-back {
+  overflow: hidden;
+  transform: rotateY(-180deg);
+  transform-style: preserve-3d;
+}
+
+/* Card active state (center) */
+.character-card.slick-center .character-card-inner {
+  box-shadow: 
+    inset 0 0 0 clamp(2px, 0.5vw, 4px) rgba(255, 220, 150, 1),
+    inset 0 0 0 clamp(4px, 1vw, 8px) rgba(139, 90, 43, 1),
+    0 0 0 clamp(3px, 0.75vw, 4px) rgba(218, 165, 32, 1),
+    0 8px 30px rgba(218, 165, 32, 0.4);
+  border: clamp(4px, 1vw, 6px) solid rgba(218, 165, 32, 1);
+}
+
+/* Active center card - enhanced floating */
+.character-card.slick-center .character-card-flip-container {
+  animation: floatingCardActive 2.5s ease-in-out infinite;
+}
+
+@keyframes floatingCardActive {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+.character-card.slick-center .card-player-name {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Card non-active state (sides) */
+.character-card:not(.slick-center) .character-card-flip-container {
+  transform: scale(0.9);
+  animation: floatingCardInactive 3.5s ease-in-out infinite;
+}
+
+@keyframes floatingCardInactive {
+  0%, 100% {
+    transform: scale(0.9) translateY(0px);
+  }
+  50% {
+    transform: scale(0.9) translateY(-5px);
+  }
+}
+
+/* Card Glow Effect */
+.card-glow {
+  display: none;
+}
+
+/* ========================================
+   CARD FRONT DESIGN - RESPONSIVE
+   ======================================== */
+
+/* Card Content Wrapper */
+.card-content-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Role Section - Top 30% */
+.card-role-section {
+  height: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 4% 5%;
+  border-bottom: clamp(3px, 0.75vw, 4px) solid rgba(139, 90, 43, 1);
+  background: linear-gradient(to bottom, rgba(255, 235, 200, 1), rgba(245, 225, 190, 1));
+  position: relative;
+  flex-shrink: 0;
+  gap: 2%;
+}
+
+/* Decorative corners */
+.card-role-section::before {
+  content: '✦';
+  position: absolute;
+  top: 4%;
+  left: 4%;
+  font-size: clamp(0.75rem, 2.5vw, 1rem);
+  color: rgba(218, 165, 32, 1);
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+.card-role-section::after {
+  content: '✦';
+  position: absolute;
+  top: 4%;
+  right: 4%;
+  font-size: clamp(0.75rem, 2.5vw, 1rem);
+  color: rgba(218, 165, 32, 1);
+  animation: sparkle 2s ease-in-out infinite 1s;
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2) rotate(180deg);
+  }
+}
+
+/* GitHub Name Tag */
+.card-name-tag {
+  font-size: clamp(0.5rem, 1.5vw, 0.75rem);
+  font-weight: bold;
+  color: rgba(70, 50, 30, 1);
+  background-color: rgba(255, 220, 150, 0.6);
+  border: clamp(1px, 0.25vw, 2px) solid rgba(139, 90, 43, 1);
+  padding: clamp(2px, 0.5vw, 4px) clamp(6px, 1.5vw, 10px);
+  border-radius: clamp(2px, 0.5vw, 4px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+  line-height: 1.3;
+  letter-spacing: 0.5px;
+  align-self: flex-start;
+}
+
+.name-tag-bracket {
+  color: rgba(218, 165, 32, 1);
+}
+
+/* Role Type - Main Title */
+.card-role-type {
+  font-size: clamp(1.25rem, 4vw, 2rem);
+  font-weight: bold;
+  color: rgba(205, 92, 92, 1);
+  text-shadow: 2px 2px 0px rgba(139, 90, 43, 0.3);
+  line-height: 1.2;
+  text-align: left;
+  letter-spacing: 1px;
+  width: 100%;
+}
+
+/* Role Description - Subtitle */
+.card-role-description {
+  font-size: clamp(0.5rem, 1.5vw, 0.875rem);
+  font-weight: bold;
+  color: rgba(70, 50, 30, 1);
+  text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.3);
+  line-height: 1.5;
+  text-align: left;
+  width: 100%;
+}
+
+/* Image Section - Middle 50% */
+.card-image-section {
+  height: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 2%;
+}
+
+.card-image-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border: clamp(3px, 0.75vw, 4px) solid rgba(139, 90, 43, 1);
+  box-shadow: 
+    inset 0 0 0 clamp(2px, 0.5vw, 3px) rgba(255, 220, 150, 1),
+    0 4px 10px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  background: linear-gradient(to bottom, rgba(180, 220, 240, 1), rgba(200, 230, 250, 1));
+}
+
+.card-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: none;
+}
+
+/* Description Section - Bottom 20% */
+.card-description-section {
+  height: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 3% 4%;
+  background: linear-gradient(to bottom, rgba(220, 200, 170, 1), rgba(200, 180, 150, 1));
+  position: relative;
+  flex-shrink: 0;
+  border-top: clamp(2px, 0.5vw, 3px) solid rgba(139, 90, 43, 1);
+}
+
+.card-description-box {
+  width: 100%;
+  text-align: center;
+}
+
+.card-description-text {
+  font-size: clamp(0.5rem, 1.5vw, 0.875rem);
+  font-weight: bold;
+  color: rgba(70, 50, 30, 1);
+  line-height: 1.6;
+  text-align: center;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.3);
+}
+
+.flip-hint-front {
+  text-align: center;
+  font-size: clamp(0.4rem, 1.2vw, 0.625rem);
+  color: rgba(139, 90, 43, 0.6);
+  text-shadow: none;
+  line-height: 1.4;
+  margin-top: 2%;
+  opacity: 0.8;
+}
+
+/* ========================================
+   CARD BACK - STATS ANALYSIS - RESPONSIVE
+   ======================================== */
+
+/* Stats Header - 30% */
+.stats-header {
+  height: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4% 5%;
+  border-bottom: clamp(3px, 0.75vw, 4px) solid rgba(139, 90, 43, 1);
+  background: linear-gradient(to bottom, rgba(255, 235, 200, 1), rgba(245, 225, 190, 1));
+  position: relative;
+  flex-shrink: 0;
+  gap: 2%;
+}
+
+/* Decorative stars */
+.stats-header::before {
+  content: '★';
+  position: absolute;
+  top: 4%;
+  left: 4%;
+  font-size: clamp(0.75rem, 2.5vw, 1rem);
+  color: rgba(218, 165, 32, 1);
+  animation: twinkle 1.5s ease-in-out infinite;
+}
+
+.stats-header::after {
+  content: '★';
+  position: absolute;
+  top: 4%;
+  right: 4%;
+  font-size: clamp(0.75rem, 2.5vw, 1rem);
+  color: rgba(218, 165, 32, 1);
+  animation: twinkle 1.5s ease-in-out infinite 0.75s;
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.3);
+  }
+}
+
+.stats-title {
+  font-size: clamp(0.75rem, 2.5vw, 1.25rem);
+  font-weight: bold;
+  color: rgba(139, 90, 43, 1);
+  text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+  line-height: 1.3;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+.stats-name {
+  font-size: clamp(0.5rem, 1.5vw, 0.875rem);
+  font-weight: bold;
+  color: rgba(70, 50, 30, 1);
+  background-color: rgba(255, 220, 150, 0.6);
+  border: clamp(1px, 0.25vw, 2px) solid rgba(139, 90, 43, 1);
+  padding: clamp(2px, 0.5vw, 4px) clamp(6px, 1.5vw, 10px);
+  border-radius: clamp(2px, 0.5vw, 4px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+  line-height: 1.3;
+  letter-spacing: 0.5px;
+}
+
+/* Stats Spectrum Area - 70% */
+.stats-spectrum-area {
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 3% 5%;
+  position: relative;
+  flex-shrink: 0;
+  background: linear-gradient(to bottom, rgba(245, 235, 210, 1), rgba(235, 220, 190, 1));
+}
+
+/* Spectrum Item */
+.spectrum-item {
+  display: flex;
+  flex-direction: column;
+  gap: 1%;
+}
+
+.spectrum-labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1%;
+}
+
+.spectrum-label-left,
+.spectrum-label-right {
+  font-size: clamp(0.5rem, 1.5vw, 0.75rem);
+  font-weight: bold;
+  color: rgba(70, 50, 30, 1);
+  text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.3);
+  line-height: 1.3;
+}
+
+/* Spectrum Bar */
+.spectrum-bar {
+  position: relative;
+  width: 100%;
+  height: clamp(0.75rem, 2.5vh, 1.25rem);
+  background: linear-gradient(to right, 
+    rgba(100, 180, 255, 1) 0%, 
+    rgba(220, 200, 170, 1) 50%, 
+    rgba(255, 140, 140, 1) 100%
+  );
+  border: clamp(2px, 0.5vw, 3px) solid rgba(139, 90, 43, 1);
+  box-shadow: 
+    inset 0 0 0 1px rgba(255, 220, 150, 0.5),
+    inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Spectrum Indicator */
+.spectrum-indicator {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(0.75rem, 2.5vw, 1.25rem);
+  height: clamp(1.25rem, 4vh, 2rem);
+  background-color: rgba(70, 50, 30, 1);
+  border: clamp(2px, 0.5vw, 3px) solid rgba(255, 220, 150, 1);
+  box-shadow: 
+    0 0 0 2px rgba(139, 90, 43, 1),
+    0 4px 10px rgba(0, 0, 0, 0.5), 
+    0 0 20px rgba(255, 220, 150, 0.8);
+  transition: left 1.2s ease-in-out;
+  z-index: 10;
+  animation: indicatorPulse 2s ease-in-out infinite;
+}
+
+@keyframes indicatorPulse {
+  0%, 100% {
+    box-shadow: 
+      0 0 0 2px rgba(139, 90, 43, 1),
+      0 4px 10px rgba(0, 0, 0, 0.5), 
+      0 0 20px rgba(255, 220, 150, 0.8);
+  }
+  50% {
+    box-shadow: 
+      0 0 0 2px rgba(139, 90, 43, 1),
+      0 4px 10px rgba(0, 0, 0, 0.5), 
+      0 0 30px rgba(255, 220, 150, 1);
+  }
+}
+
+/* Triangle pointer at top and bottom */
+.spectrum-indicator::before {
+  content: '';
+  position: absolute;
+  top: -0.6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: clamp(0.3rem, 1vw, 0.5rem) solid transparent;
+  border-right: clamp(0.3rem, 1vw, 0.5rem) solid transparent;
+  border-bottom: clamp(0.4rem, 1.2vw, 0.6rem) solid rgba(70, 50, 30, 1);
+  filter: drop-shadow(0 -2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.spectrum-indicator::after {
+  content: '';
+  position: absolute;
+  bottom: -0.6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: clamp(0.3rem, 1vw, 0.5rem) solid transparent;
+  border-right: clamp(0.3rem, 1vw, 0.5rem) solid transparent;
+  border-top: clamp(0.4rem, 1.2vw, 0.6rem) solid rgba(70, 50, 30, 1);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.flip-hint-back {
+  text-align: center;
+  font-size: clamp(0.4rem, 1.2vw, 0.625rem);
+  color: rgba(139, 90, 43, 0.6);
+  text-shadow: none;
+  line-height: 1.4;
+  margin-top: 2%;
+  opacity: 0.8;
+}
+
+/* ========================================
+   SLIDER NAVIGATION - RESPONSIVE
+   ======================================== */
+
+/* Slider Navigation Buttons */
+.slider-nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  width: clamp(2.5rem, 8vw, 3.5rem);
+  height: clamp(2.5rem, 8vw, 3.5rem);
+  background-color: rgba(242, 39, 134, 1);
+  color: rgba(242, 229, 48, 1);
+  border: clamp(2px, 0.5vw, 3px) solid rgba(242, 229, 48, 1);
+  box-shadow: 0 4px 0 rgba(140, 3, 117, 1), 0 4px 20px rgba(242, 39, 134, 0.5);
+  cursor: pointer;
+  transition: all 200ms;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(1rem, 3vw, 1.5rem);
+}
+
+.slider-nav-button:hover {
+  background-color: rgba(140, 3, 117, 1);
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 6px 0 rgba(242, 39, 134, 1), 0 6px 30px rgba(242, 229, 48, 0.5);
+}
+
+.slider-nav-button:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.slider-nav-button-prev {
+  left: 1vw;
+}
+
+.slider-nav-button-next {
+  right: 1vw;
+}
+
+@media (min-width: 768px) {
+  .slider-nav-button-prev {
+    left: 2vw;
+  }
+  
+  .slider-nav-button-next {
+    right: 2vw;
+  }
+}
+
+/* Slider Dots */
+.card-slider-dots {
+  text-align: center;
+  margin-top: 3vh;
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.5rem, 1.5vw, 0.75rem);
+}
+
+.slider-dot {
+  width: clamp(0.5rem, 2vw, 0.75rem);
+  height: clamp(0.5rem, 2vw, 0.75rem);
+  background-color: rgba(62, 178, 255, 0.4);
+  border: 2px solid rgba(62, 178, 255, 0.6);
+  cursor: pointer;
+  transition: all 200ms;
+}
+
+.slider-dot:hover {
+  background-color: rgba(62, 178, 255, 0.6);
+  box-shadow: 0 0 10px rgba(62, 178, 255, 0.8);
+}
+
+.slider-dot.active {
+  background-color: rgba(242, 229, 48, 1);
+  border-color: rgba(242, 229, 48, 1);
+  box-shadow: 0 0 15px rgba(242, 229, 48, 0.8);
+}
+
+/* ========================================
+   BUTTONS - RESPONSIVE
+   ======================================== */
+
+/* Bottom Actions */
+.card-result-actions {
+  text-align: center;
+  margin-top: 4vh;
+  display: flex;
+  justify-content: center;
+  gap: 2vw;
+  flex-wrap: wrap;
+}
+
+/* Collaboration Strategy Button */
+.collaboration-button-container {
+  text-align: center;
+  margin-bottom: 3vh;
+}
+
+.collaboration-strategy-button {
+  padding: clamp(0.75rem, 2.5vw, 1.25rem) clamp(1.25rem, 4vw, 2.5rem);
+  background-color: rgba(242, 229, 48, 1);
+  color: rgba(25, 24, 38, 1);
+  border: clamp(3px, 0.75vw, 4px) solid rgba(242, 39, 134, 1);
+  box-shadow: 0 4px 0 rgba(140, 3, 117, 1), 0 4px 20px rgba(242, 229, 48, 0.5);
+  font-family: 'Press Start 2P', cursive;
+  font-size: clamp(0.5rem, 1.8vw, 0.875rem);
+  cursor: pointer;
+  transition: all 200ms;
+  line-height: 1.5;
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.collaboration-strategy-button:hover {
+  background-color: rgba(242, 39, 134, 1);
+  color: rgba(242, 229, 48, 1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 rgba(140, 3, 117, 1), 0 6px 40px rgba(242, 39, 134, 0.8);
+}
+
+.collaboration-strategy-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 0 rgba(140, 3, 117, 1);
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 4px 0 rgba(140, 3, 117, 1), 0 4px 20px rgba(242, 229, 48, 0.5);
+  }
+  50% {
+    box-shadow: 0 4px 0 rgba(140, 3, 117, 1), 0 4px 40px rgba(242, 229, 48, 0.9);
+  }
+}
+
+/* Collaboration Modal */
+.collaboration-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(25, 24, 38, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2vh 2vw;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 300ms ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.collaboration-modal-content {
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp 400ms ease-out;
+  position: relative;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Custom Scrollbar for Modal */
+.collaboration-modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.collaboration-modal-content::-webkit-scrollbar-track {
+  background: rgba(25, 24, 38, 1);
+  border: 2px solid rgba(140, 3, 117, 0.5);
+}
+
+.collaboration-modal-content::-webkit-scrollbar-thumb {
+  background: rgba(242, 39, 134, 1);
+  border: 1px solid rgba(242, 229, 48, 0.5);
+}
+
+.collaboration-modal-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(242, 229, 48, 1);
+}
+
+.action-button {
+  padding: clamp(0.75rem, 2.5vw, 1.25rem) clamp(1.25rem, 4vw, 2.5rem);
+  background-color: rgba(62, 178, 255, 1);
+  color: rgba(25, 24, 38, 1);
+  border: clamp(2px, 0.5vw, 3px) solid rgba(242, 229, 48, 1);
+  box-shadow: 0 4px 0 rgba(140, 3, 117, 1);
+  font-family: 'Press Start 2P', cursive;
+  font-size: clamp(0.5rem, 1.8vw, 0.875rem);
+  cursor: pointer;
+  transition: all 200ms;
+  line-height: 1.5;
+}
+
+.action-button:hover {
+  background-color: rgba(242, 229, 48, 1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 rgba(140, 3, 117, 1), 0 6px 30px rgba(242, 229, 48, 0.5);
+}
+
+.action-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 0 rgba(140, 3, 117, 1);
+}
+
+/* ========================================
+   MOBILE & TOUCH OPTIMIZATION
+   ======================================== */
+
+/* Touch-friendly interactions on mobile */
+@media (max-width: 767px) {
+  /* Disable hover effects on mobile */
+  .character-card-flip-container:hover {
+    animation: floatingCard 3s ease-in-out infinite;
+    transform: translateY(0);
+    filter: none;
+  }
+
+  /* Increase touch target size for buttons */
+  .slider-nav-button {
+    width: clamp(3rem, 10vw, 4rem);
+    height: clamp(3rem, 10vw, 4rem);
+    touch-action: manipulation;
+  }
+
+  .collaboration-strategy-button {
+    min-height: 44px; /* iOS recommended touch target */
+    touch-action: manipulation;
+  }
+
+  /* Prevent text selection during interaction */
+  .character-card-flip-container {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Optimize for mobile viewport */
+  .card-result-title h1 {
+    font-size: clamp(0.875rem, 5vw, 1.5rem);
+  }
+
+  /* Adjust card spacing for smaller screens */
+  .card-slider-container {
+    padding: 2vh 0;
+  }
+
+  /* Make slider navigation more prominent on mobile */
+  .slider-nav-button {
+    opacity: 0.9;
+  }
+
+  .slider-nav-button:active {
+    opacity: 1;
+    background-color: rgba(242, 229, 48, 1);
+  }
+}
+
+/* Tablet optimization */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .character-card {
+    max-width: min(70vw, 420px);
+  }
+
+  .character-card-flip-container {
+    height: min(65vh, 550px);
+  }
+}
+
+/* Landscape mobile optimization */
+@media (max-width: 767px) and (orientation: landscape) {
+  .character-card-flip-container {
+    height: min(85vh, 480px);
+  }
+
+  .card-result-container {
+    padding: 2vh 4vw;
+  }
+
+  .card-result-title {
+    margin-bottom: 2vh;
+  }
+
+  .collaboration-button-container {
+    margin-bottom: 2vh;
+  }
+}
+
+/* High resolution displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .character-card-inner {
+    border-width: clamp(3px, 0.8vw, 5px);
+  }
+
+  .spectrum-bar {
+    border-width: clamp(2px, 0.4vw, 3px);
+  }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .character-card-flip-container {
+    animation: none !important;
+  }
+
+  .character-card.slick-center .character-card-flip-container {
+    animation: none !important;
+  }
+
+  .character-card:not(.slick-center) .character-card-flip-container {
+    animation: none !important;
+  }
+
+  .collaboration-strategy-button {
+    animation: none !important;
+  }
+
+  .flip-hint {
+    animation: none !important;
+  }
+
+  .spectrum-indicator {
+    animation: none !important;
+  }
+
+  .card-role-section::before,
+  .card-role-section::after,
+  .stats-header::before,
+  .stats-header::after {
+    animation: none !important;
+  }
+}
+
+/* ========================================
+   SLICK CAROUSEL OVERRIDE
+   ======================================== */
+
+.slick-slider {
+  position: relative;
+}
+
+.slick-list {
+  overflow: visible !important;
+}
+
+.slick-track {
+  display: flex;
+  align-items: center;
+}
+
+.slick-slide {
+  transition: all 300ms ease-out;
+}
+
+/* Player Name Below Card */
+.card-player-name {
+  text-align: center;
+  margin-top: 2vh;
+  padding-top: 1vh;
+  font-size: clamp(0.625rem, 2vw, 1rem);
+  color: rgba(242, 229, 48, 1);
+  text-shadow: 2px 2px 0px rgba(140, 3, 117, 1), 0 0 20px rgba(242, 229, 48, 0.5);
+  line-height: 1.6;
+  transition: all 400ms ease-out;
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+/* Flip Hint */
+.flip-hint {
+  text-align: center;
+  margin-top: 2vh;
+  font-size: clamp(0.4rem, 1.2vw, 0.625rem);
+  color: rgba(242, 229, 48, 0.7);
+  text-shadow: 1px 1px 0px rgba(140, 3, 117, 1);
+  line-height: 1.5;
+  animation: pulse-hint 2s ease-in-out infinite;
+}
+
+@keyframes pulse-hint {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}

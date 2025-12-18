@@ -1,0 +1,343 @@
+/* Loading Screen Styles */
+
+.loading-container {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Press Start 2P', cursive;
+  background-color: rgba(25, 24, 38, 1);
+}
+
+.loading-background {
+  position: absolute;
+  inset: 0;
+  opacity: 0.2;
+}
+
+.loading-background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pixel-grid-pattern {
+  position: absolute;
+  inset: 0;
+  opacity: 0.2;
+  background-image: repeating-linear-gradient(0deg, rgba(242, 39, 134, 0.5) 0px, rgba(242, 39, 134, 0.5) 2px, transparent 2px, transparent 4px),
+    repeating-linear-gradient(90deg, rgba(62, 178, 255, 0.5) 0px, rgba(62, 178, 255, 0.5) 2px, transparent 2px, transparent 4px);
+  background-size: 4px 4px;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.floating-particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  width: 0.25rem;
+  height: 0.25rem;
+}
+
+@media (min-width: 768px) {
+  .particle {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+}
+
+.loading-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 42rem;
+  padding: 1rem 1rem;
+}
+
+@media (min-width: 768px) {
+  .loading-content {
+    padding: 1rem 2rem;
+  }
+}
+
+.loading-title {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+  .loading-title {
+    margin-bottom: 3rem;
+  }
+}
+
+.loading-title h1 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  color: rgba(242, 229, 48, 1);
+  text-shadow: 4px 4px 0px rgba(140, 3, 117, 1), 8px 8px 0px rgba(25, 24, 38, 0.5);
+  line-height: 1.5;
+}
+
+@media (min-width: 768px) {
+  .loading-title h1 {
+    font-size: 2.25rem;
+  }
+}
+
+.loading-box {
+  position: relative;
+  padding: 2rem;
+  background-color: rgba(25, 24, 38, 0.95);
+  box-shadow: 0 0 0 4px rgba(242, 39, 134, 1),
+    0 0 0 8px rgba(140, 3, 117, 1),
+    0 8px 0 8px rgba(140, 3, 117, 1),
+    0 8px 32px rgba(242, 39, 134, 0.5);
+  border: 4px solid rgba(62, 178, 255, 0.8);
+}
+
+@media (min-width: 768px) {
+  .loading-box {
+    padding: 3rem;
+  }
+}
+
+.loading-box-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  box-shadow: inset 0 0 80px rgba(62, 178, 255, 0.3);
+}
+
+.loading-box-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Spinner Styles */
+.spinner-container {
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .spinner-container {
+    margin-bottom: 3rem;
+  }
+}
+
+.spinner-ring {
+  width: 5rem;
+  height: 5rem;
+  position: relative;
+  animation: spin 2s linear infinite;
+}
+
+@media (min-width: 768px) {
+  .spinner-ring {
+    width: 7rem;
+    height: 7rem;
+  }
+}
+
+.spinner-pixel {
+  position: absolute;
+  width: 0.5rem;
+  height: 0.5rem;
+  left: 50%;
+  top: 50%;
+}
+
+@media (min-width: 768px) {
+  .spinner-pixel {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+}
+
+.spinner-pixel-pink {
+  background-color: rgba(242, 39, 134, 1);
+  box-shadow: 0 0 20px rgba(242, 39, 134, 1);
+}
+
+.spinner-pixel-blue {
+  background-color: rgba(62, 178, 255, 1);
+  box-shadow: 0 0 20px rgba(62, 178, 255, 1);
+}
+
+.spinner-core-wrapper {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner-core {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: rgba(242, 229, 48, 1);
+  box-shadow: 0 0 0 3px rgba(140, 3, 117, 1),
+    0 0 30px rgba(242, 229, 48, 0.6),
+    inset 0 0 15px rgba(242, 39, 134, 0.4);
+}
+
+@media (min-width: 768px) {
+  .spinner-core {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+}
+
+.spinner-core-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(140, 3, 117, 1);
+  margin: 3px;
+}
+
+/* Loading Text */
+.loading-text {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 0.75rem;
+  color: rgba(62, 178, 255, 1);
+  text-shadow: 2px 2px 0px rgba(25, 24, 38, 1), 0 0 20px rgba(62, 178, 255, 0.5);
+  line-height: 1.8;
+  min-height: 3em;
+}
+
+@media (min-width: 768px) {
+  .loading-text {
+    font-size: 0.875rem;
+  }
+}
+
+.loading-text-content {
+  margin-bottom: 0.5rem;
+}
+
+/* Progress Bar */
+.progress-container {
+  width: 100%;
+  max-width: 28rem;
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  font-size: 0.75rem;
+  color: rgba(242, 229, 48, 1);
+  text-shadow: 1px 1px 0px rgba(140, 3, 117, 1);
+  line-height: 1.5;
+}
+
+.progress-bar-bg {
+  width: 100%;
+  height: 1.5rem;
+  position: relative;
+  background-color: rgba(25, 24, 38, 1);
+  border: 3px solid rgba(62, 178, 255, 0.6);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+@media (min-width: 768px) {
+  .progress-bar-bg {
+    height: 2rem;
+  }
+}
+
+.progress-bar-fill {
+  height: 100%;
+  transition: width 300ms ease-out;
+  position: relative;
+  overflow: hidden;
+  background-color: rgba(242, 39, 134, 1);
+  box-shadow: 0 0 20px rgba(242, 39, 134, 0.8);
+}
+
+.progress-bar-stripes {
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(242, 229, 48, 0.3) 8px, rgba(242, 229, 48, 0.3) 16px);
+  animation: slide 1s linear infinite;
+}
+
+/* Status Text */
+.status-text {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.75rem;
+  opacity: 0.6;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  color: rgba(62, 178, 255, 1);
+  line-height: 1.8;
+}
+
+.bottom-hint {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 0.75rem;
+  opacity: 0.4;
+  color: rgba(242, 229, 48, 1);
+  line-height: 1.8;
+}
+
+/* Animations */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh) translateX(0);
+  }
+}
+
+@keyframes slide {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 16px 0;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
