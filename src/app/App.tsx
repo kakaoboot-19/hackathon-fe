@@ -53,11 +53,17 @@ const generateCardData = (username: string, index: number): CharacterCardData =>
   const name = trimmedName !== '' ? trimmedName : `PLAYER_${index + 1}`;
   const id = `${name}-${index + 1}`;
 
+  const statDay = 28;
+  const statAtomic = 17;
+  const statCrew = 34
+  const statSpecial = 52
+  const personalityType = "NBIS";
+
   return {
     id,
     name,
     role: {
-      type: roleTypes[index % roleTypes.length],
+      type: personalityType,
       role_en: roleNames[index % roleNames.length],
       role_kr: roleKrNames[index % roleKrNames.length],
       description: roleDescriptions[index % roleDescriptions.length],
@@ -66,10 +72,10 @@ const generateCardData = (username: string, index: number): CharacterCardData =>
       url: images[index % images.length],
     },
     stats: {
-      dayVsNight: Math.floor(Math.random() * 60) + 20,
-      steadyVsBurst: Math.floor(Math.random() * 60) + 20,
-      indieVsCrew: Math.floor(Math.random() * 60) + 20,
-      specialVsGeneral: Math.floor(Math.random() * 60) + 20,
+      dayVsNight: statDay,
+      steadyVsBurst: statAtomic,
+      indieVsCrew: statCrew,
+      specialVsGeneral: statSpecial
     },
   };
 };

@@ -134,14 +134,6 @@ export function CharacterCard({ card, isFlipped, onClick }: CharacterCardProps) 
   const indieCrewStats = calculateStats(card.stats.indieVsCrew);
   const specialGeneralStats = calculateStats(card.stats.specialVsGeneral);
 
-  // Determine personality type based on stats 
-  const personalityType = [
-    card.stats.dayVsNight < 50 ? 'N' : 'D', // Night vs Day
-    card.stats.steadyVsBurst > 50 ? 'A' : 'B', // Atom vs Bulk
-    card.stats.indieVsCrew > 50 ? 'C' : 'I', // Crew vs Indie
-    card.stats.specialVsGeneral > 50 ? 'S' : 'G', // special vs General
-  ].join('');
-
   return (
     <div className="character-card">
       <div
