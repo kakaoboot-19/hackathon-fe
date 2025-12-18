@@ -4,7 +4,7 @@
   width: 100%;
   max-width: 900px;
   margin: 0 auto;
-  font-family: 'Press Start 2P', cursive;
+  font-family: var(--font-neo);
   position: relative;
 }
 
@@ -14,6 +14,7 @@
 
 .collaboration-inline-header {
   text-align: center;
+  font-family: 'Press Start 2P', cursive;
   margin-bottom: 4vh;
 }
 
@@ -26,7 +27,8 @@
 }
 
 .collaboration-inline-subtitle {
-  font-size: clamp(0.5rem, 1.8vw, 0.875rem);
+    font-family: var(--font-neo);
+  font-size: clamp(0.5rem, 3vw, 0.875rem);
   color: rgba(62, 178, 255, 1);
   text-shadow: 2px 2px 0px rgba(25, 24, 38, 1);
   line-height: 1.6;
