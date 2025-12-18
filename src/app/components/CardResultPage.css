@@ -6,7 +6,7 @@
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
-  font-family: var(--font-neo);
+  font-family: 'Press Start 2P', cursive;
   background-color: rgba(25, 24, 38, 1);
   padding: 2vh 2vw;
 }
@@ -29,20 +29,105 @@
   }
 }
 
-.card-result-background {
-  position: absolute;
+/* ========================================
+   PIXEL STARS BACKGROUND
+   ======================================== */
+
+.pixel-stars-background {
+  position: fixed;
   inset: 0;
-  opacity: 0.2;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
 }
 
-.card-result-grid-pattern {
+.pixel-star {
   position: absolute;
-  inset: 0;
-  opacity: 0.15;
-  background-image: repeating-linear-gradient(0deg, rgba(242, 39, 134, 0.5) 0px, rgba(242, 39, 134, 0.5) 2px, transparent 2px, transparent 4px),
-    repeating-linear-gradient(90deg, rgba(62, 178, 255, 0.5) 0px, rgba(62, 178, 255, 0.5) 2px, transparent 2px, transparent 4px);
-  background-size: 4px 4px;
+  width: 8px;
+  height: 8px;
+  background-color: rgba(242, 229, 48, 0.8);
+  box-shadow: 
+    0 0 4px rgba(242, 229, 48, 0.6),
+    0 0 8px rgba(242, 229, 48, 0.3);
+  clip-path: polygon(
+    50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%
+  );
+  animation: twinkleStar 3s ease-in-out infinite;
 }
+
+@keyframes twinkleStar {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+/* Pixel Star Positions */
+.pixel-star-1 {
+  top: 10%;
+  left: 15%;
+  animation-delay: 0s;
+}
+
+.pixel-star-2 {
+  top: 20%;
+  left: 80%;
+  animation-delay: 0.5s;
+}
+
+.pixel-star-3 {
+  top: 35%;
+  left: 25%;
+  animation-delay: 1s;
+}
+
+.pixel-star-4 {
+  top: 50%;
+  left: 70%;
+  animation-delay: 1.5s;
+}
+
+.pixel-star-5 {
+  top: 65%;
+  left: 10%;
+  animation-delay: 2s;
+}
+
+.pixel-star-6 {
+  top: 75%;
+  left: 85%;
+  animation-delay: 2.5s;
+}
+
+.pixel-star-7 {
+  top: 15%;
+  left: 50%;
+  animation-delay: 0.8s;
+}
+
+.pixel-star-8 {
+  top: 40%;
+  left: 90%;
+  animation-delay: 1.3s;
+}
+
+.pixel-star-9 {
+  top: 80%;
+  left: 45%;
+  animation-delay: 1.8s;
+}
+
+.pixel-star-10 {
+  top: 90%;
+  left: 60%;
+  animation-delay: 2.3s;
+}
+
+/* ======================================== */
 
 .card-result-content {
   position: relative;
@@ -324,7 +409,7 @@
   }
   50% {
     opacity: 1;
-    transform: scale(1.5) rotate(180deg);
+    transform: scale(1.2) rotate(180deg);
   }
 }
 
@@ -785,7 +870,7 @@
   color: rgba(25, 24, 38, 1);
   border: clamp(3px, 0.75vw, 4px) solid rgba(242, 39, 134, 1);
   box-shadow: 0 4px 0 rgba(140, 3, 117, 1), 0 4px 20px rgba(242, 229, 48, 0.5);
-  font-family: var(--font-neo);
+  font-family: 'Press Start 2P', cursive;
   font-size: clamp(0.5rem, 1.8vw, 0.875rem);
   cursor: pointer;
   transition: all 200ms;
@@ -882,7 +967,7 @@
   color: rgba(25, 24, 38, 1);
   border: clamp(2px, 0.5vw, 3px) solid rgba(242, 229, 48, 1);
   box-shadow: 0 4px 0 rgba(140, 3, 117, 1);
-  font-family: var(--font-neo);
+  font-family: 'Press Start 2P', cursive;
   font-size: clamp(0.5rem, 1.8vw, 0.875rem);
   cursor: pointer;
   transition: all 200ms;
@@ -1081,4 +1166,68 @@
   50% {
     opacity: 1;
   }
+}
+
+/* ========================================
+   SECTION LAYOUTS
+   ======================================== */
+
+/* Card Result Section */
+.card-result-section {
+  position: relative;
+  margin-bottom: 8vh;
+}
+
+/* Transfer Section */
+.transfer-section {
+  position: relative;
+  margin: 8vh 0;
+  padding: 4vh 2vw;
+}
+
+.transfer-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1rem, 3vw, 2rem);
+}
+
+.transfer-pixel-line {
+  flex: 1;
+  height: 3px;
+  background: repeating-linear-gradient(
+    to right,
+    rgba(242, 39, 134, 0.6) 0px,
+    rgba(242, 39, 134, 0.6) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+  max-width: 200px;
+}
+
+.transfer-text {
+  font-size: clamp(0.625rem, 2vw, 1rem);
+  font-weight: bold;
+  color: rgba(62, 178, 255, 1);
+  text-shadow: 2px 2px 0px rgba(140, 3, 117, 1);
+  line-height: 1.5;
+  text-align: center;
+  padding: 0 1rem;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .transfer-text {
+    white-space: normal;
+  }
+  
+  .transfer-pixel-line {
+    max-width: 50px;
+  }
+}
+
+/* Collaboration Report Section */
+.collaboration-report-section {
+  position: relative;
+  margin-bottom: 6vh;
 }

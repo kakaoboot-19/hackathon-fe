@@ -253,6 +253,21 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
 
   return (
     <div className="card-result-container">
+
+        {/* Pixel Stars Background */}
+        <div className="pixel-stars-background">
+        <div className="pixel-star pixel-star-1"></div>
+        <div className="pixel-star pixel-star-2"></div>
+        <div className="pixel-star pixel-star-3"></div>
+        <div className="pixel-star pixel-star-4"></div>
+        <div className="pixel-star pixel-star-5"></div>
+        <div className="pixel-star pixel-star-6"></div>
+        <div className="pixel-star pixel-star-7"></div>
+        <div className="pixel-star pixel-star-8"></div>
+        <div className="pixel-star pixel-star-9"></div>
+        <div className="pixel-star pixel-star-10"></div>
+        </div>
+
       {/* Pixel Grid Pattern */}
       <div className="card-result-grid-pattern"></div>
 
@@ -265,6 +280,8 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
           </button>
         </div>
 
+      {/* ========== CARD RESULT SECTION ========== */}
+      <section className="card-result-section">
         {/* Title */}
         <div className="card-result-title">
           <h1>CHARACTER DECK</h1>
@@ -303,6 +320,18 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
             ))}
           </Slider>
         </div>
+      </section>
+
+      {/* ========== TRANSFER COMPONENT ========== */}
+      <section className="transfer-section">
+        <div className="transfer-divider">
+        <span className="transfer-pixel-line"></span>
+        <span className="transfer-text">당신의 팀을 위한 AI 전략</span>
+        <span className="transfer-pixel-line"></span>
+        </div>
+      </section>
+
+
 
         {/* Actions */}
         <div className="card-result-actions">
