@@ -58,8 +58,8 @@ const generateCardData = (username: string, index: number): CharacterCardData =>
     name,
     role: {
       type: roleTypes[index % roleTypes.length],
-      role: roleNames[index % roleNames.length],
-      roleKr: roleKrNames[index % roleKrNames.length],
+      role_en: roleNames[index % roleNames.length],
+      role_kr: roleKrNames[index % roleKrNames.length],
       description: roleDescriptions[index % roleDescriptions.length],
     },
     image: {

@@ -4,8 +4,8 @@ export interface CharacterCardData {
   id: string;
   name: string;
   role: {
-    role: string;
-    roleKr: string;
+    role_en: string;
+    role_kr: string;
     type: string;
     description: string;
   };
@@ -72,12 +72,12 @@ export function CharacterCard({ card, isFlipped, onClick }: CharacterCardProps) 
 
               {/* Role Type - Main Title */}
               <div className="card-role-korean">
-                {card.role.roleKr}
+                {card.role.role_kr}
               </div>
 
               {/* Role Description - Subtitle */}
               <div className="card-role-english">
-                {card.role.role}
+                {card.role.role_en}
               </div>
             </div>
 

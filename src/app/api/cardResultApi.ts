@@ -2,8 +2,8 @@
 export interface BackendCardResult {
   username: string;
   role: {
-    role: string;
-    roleKr?: string;
+    role_en: string;
+    role_kr?: string;
     type: string;
     description: string;
   };

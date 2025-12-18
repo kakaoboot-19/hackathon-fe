@@ -34,7 +34,7 @@ function validateBackendData(
   }
 
   // || !typed.role.roleKr
-  if (!typed.role || !typed.role.role || !typed.role.description) {
+  if (!typed.role || !typed.role.role_kr || !typed.role.role_en || !typed.role.description) {
     throw new Error(`(${username}) 역할 정보가 누락되었습니다.`);
   }
 
