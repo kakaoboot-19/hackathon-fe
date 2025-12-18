@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { CharacterCard, CharacterCardData } from './CharacterCard';
 import { CollaborationReport } from './CollaborationReport';
 import { LoadingScreen } from './LoadingScreen';
-import { fetchCardResult } from '../api/cardResultApi';
+import { BackendCardResult, fetchCardResult } from '../api/cardResultApi';
 import { API_BASE_URL } from '../api/axios';
 import { mapToCharacterCard } from '../api/cardResultMapper';
 import 'slick-carousel/slick/slick.css';
@@ -22,18 +22,18 @@ interface CardResultPageProps {
 function validateBackendData(
   data: unknown,
   username: string
-): asserts data is Awaited<ReturnType<typeof fetchCardResult>> {
+): asserts data is BackendCardResult {
   if (!data || typeof data !== 'object') {
     throw new Error(`(${username}) 결과 형식이 올바르지 않습니다.`);
   }
 
-  const typed = data as Partial<Awaited<ReturnType<typeof fetchCardResult>>>;
+  const typed = data as Partial<BackendCardResult>;
 
-  if (!typed.role || !typed.role.role || !typed.role.type || !typed.role.description) {
+  if (!typed.role || !typed.role.role || !typed.role.roleKr || !typed.role.description) {
     throw new Error(`(${username}) 역할 정보가 누락되었습니다.`);
   }
 
-  if (!typed.image || !typed.image.url || !typed.image.description) {
+  if (!typed.image || !typed.image.url) {
     throw new Error(`(${username}) 이미지 정보가 누락되었습니다.`);
   }
 
@@ -69,14 +69,14 @@ export function CardResultPage({ usernames, mockCards, onReset, onCollaboration 
         setLoading(true);
         setError(null);
 
-        const results = await Promise.all(
-          normalizedUsernames.map((u, i) =>
-            fetchCardResult(u).then((data) => {
-              validateBackendData(data, u);
-              return mapToCharacterCard(u, i, data);
-            })
-          )
-        );
+        const backendResults = await fetchCardResult(normalizedUsernames);
+
+        const results = backendResults.map((result, index) => {
+          const username = normalizedUsernames[index] ?? `user-${index + 1}`;
+          validateBackendData(result, username);
+          return mapToCharacterCard(username, index, result);
+        });
+
 
         if (mounted) {
           setCards(results);

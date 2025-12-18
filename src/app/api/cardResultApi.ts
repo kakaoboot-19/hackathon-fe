@@ -19,8 +19,7 @@ export interface BackendCardResult {
 
 import { api } from "./axios";
 
-export const fetchCardResult = async (username: string) => {
-    const res = await api.post<BackendCardResult>("/api/gitbti", { username });
-    console.log(res.data);
-    return res.data;
+export const fetchCardResult = async (usernames: string[]) => {
+  const res = await api.post<BackendCardResult[]>("/api/gitbti/batch", { usernames });
+  return res.data;
 };
