@@ -7,5 +7,3 @@ services:
     env_file:
       - .env
     restart: always
-    volumes:
-      - ./certs:/etc/nginx/certs
