@@ -83,7 +83,7 @@ const generateCardData = (username: string, index: number): CharacterCardData =>
 export default function App() {
   const [inputFields, setInputFields] = useState<string[]>(['']);
   const [appState, setAppState] = useState<AppState>('input');
-  const maxFields = 6;
+  const maxFields = 3;
   const playerNames = useMemo(
     () => inputFields.map((field) => field.trim()).filter(Boolean),
     [inputFields]
