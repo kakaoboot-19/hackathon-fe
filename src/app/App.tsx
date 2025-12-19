@@ -242,7 +242,7 @@ export default function App() {
               {/* Input Fields */}
               <div className="space-y-4 mb-6">
                 {inputFields.map((value, index) => (
-                  <div key={index} className="flex gap-2 items-center">
+                  <div key={index} className="flex flex-col gap-2 sm:flex-row sm:items-center">
                     {/* Player Number Badge */}
                     <div 
                       className="flex-shrink-0 w-8 h-8 md:w-10 md:h-10 flex items-center justify-center text-xs"
@@ -262,7 +262,7 @@ export default function App() {
                       value={value}
                       onChange={(e) => handleInputChange(index, e.target.value)}
                       placeholder="github-username"
-                      className="flex-1 px-4 py-3 md:py-4 text-xs outline-none transition-all duration-200"
+                      className="w-full sm:flex-1 px-4 py-3 md:py-4 text-xs outline-none transition-all duration-200"
                       style={{
                         backgroundColor: 'rgba(25, 24, 38, 1)',
                         color: 'rgba(62, 178, 255, 1)',
