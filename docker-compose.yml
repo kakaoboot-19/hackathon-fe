@@ -1,0 +1,11 @@
+services:
+  web:
+    image: michael568/card-nginx
+    container_name: nginx
+    ports:
+      - "80:80"
+    env_file:
+      - .env
+    restart: always
+    volumes:
+      - ./certs:/etc/nginx/certs
